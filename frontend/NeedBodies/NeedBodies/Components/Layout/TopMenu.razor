@@ -1,0 +1,53 @@
+﻿@using Blazorise.Localization
+
+<Bar Breakpoint="Breakpoint.Desktop" Background="Background.Primary" ThemeContrast="ThemeContrast.Light">
+    <BarBrand>
+        <BarItem>
+            <BarLink To="">
+                <BarIcon Margin="Margin.Is2.FromEnd" IconName="IconName.Dashboard" />
+                Need Bodies
+            </BarLink>
+        </BarItem>
+    </BarBrand>
+    <BarToggler />
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="/">Home</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="https://blazorise.com/docs/">Documentation</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarDropdown>
+                    <BarDropdownToggle>More</BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownItem To="https://blazorise.com/docs/start/">
+                            Quick-Start Guide
+                        </BarDropdownItem>
+                        <BarDropdownDivider />
+                        <BarDropdownItem To="https://blazorise.com/docs/usage/">
+                            Usage
+                        </BarDropdownItem>
+                    </BarDropdownMenu>
+                </BarDropdown>
+            </BarItem>
+
+
+        </BarStart>
+        <BarEnd>
+            <BarItem>
+                <BarDropdown RightAligned>
+                    <BarDropdownToggle>
+                        <Icon Name="IconName.Language" />
+                    </BarDropdownToggle>
+                </BarDropdown>
+            </BarItem>
+            <BarItem>
+                <BarLink To="https://github.com/Megabit/Blazorise">GitHub</BarLink>
+            </BarItem>
+        </BarEnd>
+    </BarMenu>
+</Bar>
+@code {
+}
