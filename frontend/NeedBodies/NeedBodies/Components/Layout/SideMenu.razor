@@ -16,18 +16,24 @@
                     Dashboard
                 </BarLink>
             </BarItem>
-            <BarItem>
-                <BarLink To="/usergames">
-                    <BarIcon IconName="IconName.PlayCircle" />
-                    My Games
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="/addgame">
-                    <BarIcon IconName="IconName.PlusCircle" />
-                    Add Game
-                </BarLink>
-            </BarItem>
+            <AuthorizeView>
+                <Authorized>
+
+                    <BarItem>
+                        <BarLink To="/usergames">
+                            <BarIcon IconName="IconName.PlayCircle" />
+                            My Games
+                        </BarLink>
+                    </BarItem>
+                    <BarItem>
+                        <BarLink To="/addgame">
+                            <BarIcon IconName="IconName.PlusCircle" />
+                            Add Game
+                        </BarLink>
+                    </BarItem>
+                    
+                </Authorized>
+            </AuthorizeView>
         </BarStart>
         <BarEnd>
             <BarItem>

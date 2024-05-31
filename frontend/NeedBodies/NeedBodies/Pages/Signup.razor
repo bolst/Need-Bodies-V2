@@ -1,0 +1,151 @@
+@page "/signup"
+@using NeedBodies.Auth
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+@inject UserService userService
+
+
+<AuthorizeView>
+    <Authorized>
+
+    </Authorized>
+    <NotAuthorized>
+<Row RowColumns="RowColumns.Are2">
+
+    <Column ColumnSize="ColumnSize.Is4.OnDesktop.Is12" Padding="Padding.Is4">
+        <Lead TextSize="TextSize.ExtraLarge">Create an Account</Lead>
+
+        <Divider />
+
+<Validations @ref="validations" Mode="ValidationMode.Manual">
+        <Field>
+            <FieldLabel TextSize="TextSize.Small">
+                Username
+            </FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidationRule.IsNotEmpty">
+                    <TextEdit Border="Border.Is4.Dark.OnBottom.Is0.OnAll" Background="Background.Light"
+                        @bind-Text="@inputUsername" />
+                </Validation>
+            </FieldBody>
+        </Field>
+        <Field>
+            <FieldLabel TextSize="TextSize.Small">
+                Email
+            </FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidationRule.IsEmail">
+                    <TextEdit Border="Border.Is4.Dark.OnBottom.Is0.OnAll" Background="Background.Light"
+                        @bind-Text="@inputEmail" />
+                </Validation>
+            </FieldBody>
+        </Field>
+        <Field>
+            <FieldLabel TextSize="TextSize.Small">
+                Password
+            </FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidationRule.IsNotEmpty">
+                <TextEdit Border="Border.Is4.Dark.OnBottom.Is0.OnAll" Background="Background.Light"
+                    Role="TextRole.Password" @bind-Text="@inputPassword" />
+                    </Validation>
+            </FieldBody>
+        </Field>
+        <Field>
+            <FieldLabel TextSize="TextSize.Small">
+                Confirm Password
+            </FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidateConfirmPassword">
+                <TextEdit Border="Border.Is4.Dark.OnBottom.Is0.OnAll" Background="Background.Light"
+                    Role="TextRole.Password" @bind-Text="@inputPasswordConfirm" />
+                </Validation>
+            </FieldBody>
+        </Field>
+        <Field>
+            <FieldBody>
+                <Button Background="Background.Primary" Width="Width.Is100" TextColor="TextColor.Light"
+                    Clicked="SignUpAsync">Continue
+                    <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </FieldBody>
+        </Field>
+</Validations>
+
+        <Divider />
+
+        <Lead TextSize="TextSize.ExtraLarge">Already have an account?</Lead>
+        <Button Background="Background.Light" Width="Width.Is100" TextColor="TextColor.Primary"
+            Clicked='() => navManager.NavigateTo("/auth")'>Log in
+            <Icon Name="IconName.ArrowRight" />
+        </Button>
+    </Column>
+
+    <Column ColumnSize="ColumnSize.Is8" Position="Position.Relative" TextAlignment="TextAlignment.Center"
+        Class="login-side" Display="Display.Block.OnDesktop.None">
+    </Column>
+
+</Row>
+</NotAuthorized>
+</AuthorizeView>
+
+<style>
+    .login-side {
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5)), url('mackinnon.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+</style>
+
+@code {
+
+    Validations? validations;
+
+    string inputUsername { get; set; } = "";
+    string inputEmail { get; set; } = "";
+    string inputPassword { get; set; } = "";
+    string inputPasswordConfirm { get; set; } = "";
+
+    void ValidateConfirmPassword(ValidatorEventArgs e)
+    {
+        e.Status = ((inputPasswordConfirm.Length > 0) && (inputPassword == inputPasswordConfirm)) ? ValidationStatus.Success : ValidationStatus.Error;
+    }
+
+    async Task SignUpAsync()
+    {
+        if (!(await validations!.ValidateAll()))
+        {
+            return;
+        }
+
+        var s = await Api.Auth.AddUser(inputUsername, inputEmail, inputPassword);
+        string response = s.Item1;
+        int newID = s.Item2;
+
+        if (response == "success")
+        {
+            User newUser = new User
+                {
+                    ID = newID,
+                    Username = inputUsername,
+                    Email = inputEmail,
+                    Games = new(),
+                    HostedGames = new()
+                };
+            userService.addUser(newUser);
+            var userAuthStateProvider = (UserAuthenticationStateProvider)authStateProvider;
+            await userAuthStateProvider.UpdateAuthenticationState(new UserSession
+                {
+                    Username = newUser.Username,
+                    ID = newUser.ID,
+                });
+            navManager.NavigateTo("/", true);
+        }
+        else
+        {
+
+        }
+    }
+}

@@ -2,29 +2,19 @@
 @inject NavigationManager navManager
 
 <Div Margin="Margin.Is5.OnX.OnDesktop">
-    <Card>
-        <CardHeader Padding="Padding.Is0.FromBottom">
-            <CardTitle Flex="Flex.Column.AlignItems.Start">
-                <Span TextWeight="TextWeight.Bold">Public Games</Span>
-            </CardTitle>
-        </CardHeader>
-        <CardBody>
-            @if (Games != null)
+    <Heading Size="HeadingSize.Is3">Public Games</Heading>
+    @if (Games != null)
+    {
+        <Row>
+            @foreach (Data.Game game in Games)
             {
-                Color color = Color.Link;
-                <ListGroup Mode="ListGroupMode.Selectable">
-                    @foreach (Data.Game game in Games)
-                    {
-                        @ListGroupGameItem(game, color)
-                        color = (color == Color.Link) ? Color.Light : Color.Link;
-                    }
-                </ListGroup>
+                <PublicGameItem game="@game" />
             }
-        </CardBody>
-    </Card>
-</Div>
+        </Row>
+    }
+    </Div>
 
-@code {
+    @code {
 
     List<Data.Game>? Games = null;
 
@@ -33,17 +23,5 @@
         Games = await Api.Games.GetPublicGameListAsync();
     }
 
-    private RenderFragment ListGroupGameItem(Data.Game game, Color color) => __builder =>
-    {
-        <ListGroupItem Color="@color" TextWeight="TextWeight.Bold" Clicked="() => GoToGamePage(game)"
-            Flex="Flex.JustifyContent.Between.AlignItems.Center" TextAlignment="TextAlignment.Center">@game.DisplayName
-            <Badge Color="Color.Light" Margin="Margin.Is1.OnX.OnMobile">@game.Date.ToString("M/dd hh:mm tt")</Badge>
-        </ListGroupItem>
-    };
 
-    private Task GoToGamePage(Data.Game game)
-    {
-        navManager.NavigateTo("/gamepage?id=" + game.Id);
-        return Task.CompletedTask;
-    }
 }

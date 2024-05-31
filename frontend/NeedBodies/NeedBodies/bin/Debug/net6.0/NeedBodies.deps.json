@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "NeedBodies/1.3": {
         "dependencies": {
+          "BlazorLeaflet": "0.4.0-alpha",
           "Blazorise": "1.3.4",
           "Blazorise.Bootstrap5": "1.3.4",
           "Blazorise.Icons.FontAwesome": "1.3.4"
@@ -64,6 +65,18 @@
           "lib/net6.0/Blazorise.Licensing.dll": {
             "assemblyVersion": "1.1.0.0",
             "fileVersion": "1.1.0.0"
+          }
+        }
+      },
+      "BlazorLeaflet/0.4.0-alpha": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components": "6.0.25",
+          "Microsoft.AspNetCore.Components.Web": "6.0.25"
+        },
+        "runtime": {
+          "lib/netstandard2.0/BlazorLeaflet.dll": {
+            "assemblyVersion": "0.3.0.0",
+            "fileVersion": "0.3.0.0"
           }
         }
       },
@@ -888,6 +901,13 @@
       "sha512": "sha512-QDHl4m8ixmq+xIsW3d0kHBpJYJPqMBzbNCFhtEsqSrmrAPMEmSVm6r9pprkgT51leeqvkPxuy22Osiql48KgDQ==",
       "path": "blazorise.licensing/1.1.0",
       "hashPath": "blazorise.licensing.1.1.0.nupkg.sha512"
+    },
+    "BlazorLeaflet/0.4.0-alpha": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zwx7kvkfkiW8JyDGojOpZqRsV6UB2SXH4yEiO/EeZgkzy+AP7fLRCe445P8nNwukAFnVG8HEZzNn50Wf3S6Gpg==",
+      "path": "blazorleaflet/0.4.0-alpha",
+      "hashPath": "blazorleaflet.0.4.0-alpha.nupkg.sha512"
     },
     "DeepCloner/0.10.4": {
       "type": "package",

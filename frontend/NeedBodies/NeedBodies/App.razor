@@ -1,15 +1,17 @@
-﻿<Blazorise.ThemeProvider Theme="@theme">
-    <Router AppAssembly="typeof(App).Assembly">
-        <Found Context="routeData">
-            <RouteView RouteData="routeData" DefaultLayout="typeof(NeedBodies.Layouts.MainLayout)" />
-        </Found>
-        <NotFound>
-            <p>Sorry, there's nothing at this address.</p>
-        </NotFound>
-    </Router>
-    <MessageProvider />
-    <PageProgressProvider />
-</Blazorise.ThemeProvider>
+﻿<CascadingAuthenticationState>
+    <Blazorise.ThemeProvider Theme="@theme">
+        <Router AppAssembly="typeof(App).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(NeedBodies.Layouts.MainLayout)" />
+            </Found>
+            <NotFound>
+                <p>Sorry, there's nothing at this address.</p>
+            </NotFound>
+        </Router>
+        <MessageProvider />
+        <PageProgressProvider />
+    </Blazorise.ThemeProvider>
+</CascadingAuthenticationState>
 @code {
     private Theme theme = new()
         {
@@ -25,7 +27,7 @@
                 Info = "#344055",
                 Warning = "#FEB95F",
                 Danger = "#E63946",
-                Light = "#E7F6FA",
+                Light = "#f2f4f8",
                 Dark = "#131E31",
             },
             BackgroundOptions = new()
@@ -36,7 +38,7 @@
                 Info = "#344055",
                 Warning = "#FEB95F",
                 Danger = "#E63946",
-                Light = "#E7F6FA",
+                Light = "#f2f4f8",
                 Dark = "#131E31",
             },
             InputOptions = new()

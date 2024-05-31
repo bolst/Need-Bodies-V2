@@ -1,0 +1,22 @@
+@namespace NeedBodies.Components
+
+@if (Game != null)
+{
+    <Row>
+    <Lead TextSize="TextSize.ExtraLarge">Players</Lead>
+</Row>
+    <Row>
+        <Paragraph>
+            @foreach(var player in players)
+            {
+                <Button Background="Background.Transparent">@player</Button>
+            }
+            </Paragraph>
+    </Row>
+}
+
+@code {
+    [Parameter] public Data.Game? Game { get; set; } = null;
+
+    List<string> players = new() { "John", "steven", "nic bolton", "chris bolton", "jack sexsmith", "landon prince", "aedan sullivan", "boe piroski", "josh cyrenne", "marco sladoje", "matteo frat", "ethan galvan"};
+}

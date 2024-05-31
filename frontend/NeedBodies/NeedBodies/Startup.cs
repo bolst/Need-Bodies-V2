@@ -1,6 +1,9 @@
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using NeedBodies.Auth;
 
 namespace NeedBodies;
 
@@ -8,23 +11,24 @@ public class Startup
 {
     // This method gets called by the runtime. Use this method to add services to the container.
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-    public void ConfigureServices( IServiceCollection services )
+    public void ConfigureServices(IServiceCollection services)
     {
+        services.AddAuthenticationCore();
+        services.AddAuthorizationCore();
         services.AddRazorPages();
         services.AddServerSideBlazor();
+        services.AddScoped<ProtectedSessionStorage>();
+        services.AddScoped<AuthenticationStateProvider, UserAuthenticationStateProvider>();
+        services.AddSingleton<UserService>();
 
-        services.AddServerSideBlazor().AddHubOptions( ( o ) =>
-        {
-            o.MaximumReceiveMessageSize = 1024 * 1024 * 100;
-        } );
+        AddBlazorise(services);
 
-        AddBlazorise( services );
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure( IApplicationBuilder app, IWebHostEnvironment env )
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if ( env.IsDevelopment() )
+        if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
@@ -39,6 +43,9 @@ public class Startup
 
         app.UseRouting();
 
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         // this is required to be here or otherwise the messages between server and client will be too large and
         // the connection will be lost.
         //app.UseSignalR( route => route.MapHub<ComponentHub>( ComponentHub.DefaultPath, o =>
@@ -47,14 +54,14 @@ public class Startup
         //    o.TransportMaxBufferSize = 1024 * 1024 * 100; // larger size
         //} ) );
 
-        app.UseEndpoints( endpoints =>
+        app.UseEndpoints(endpoints =>
         {
             endpoints.MapBlazorHub();
-            endpoints.MapFallbackToPage( "/_Host" );
-        } );
+            endpoints.MapFallbackToPage("/_Host");
+        });
     }
 
-    public void AddBlazorise( IServiceCollection services )
+    public void AddBlazorise(IServiceCollection services)
     {
         services
             .AddBlazorise();

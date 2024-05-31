@@ -1,0 +1,48 @@
+@page "/gamepage"
+@inject NavigationManager navManager
+
+@if (Game != null)
+{
+    <Row Style="background-color: #dfe4f0">
+    <DisplayHeading Padding="Padding.Is4">@Game.DisplayName</DisplayHeading>
+</Row>
+    <Div Padding="Padding.Is4">
+        <Row RowColumns="RowColumns.Are2.OnTablet.Are1.OnMobile">
+            <Column ColumnSize="ColumnSize.Is8.OnTablet.Is12.OnMobile" Border="Border.Is3.OnEnd">
+                <GamePlayers Game="@Game" />
+            </Column>
+
+            <Column ColumnSize="ColumnSize.Is4.OnTablet.Is12.OnMobile" Padding="Padding.Is4.FromTop.OnMobile">
+                <Lead Padding="Padding.Is4.FromStart">@Game.Date.ToString("hh:mm tt")</Lead>
+                <Lead Padding="Padding.Is4.FromStart">@Game.Date.ToString("dddd, MMMM dd\\/yy")</Lead>
+                <Lead Padding="Padding.Is4.FromStart">@Game.ArenaName</Lead>
+            </Column>
+        </Row>
+    </Div>
+}
+
+
+@code {
+    Data.Game? Game { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uriBuilder = new UriBuilder(navManager.Uri);
+        var q = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
+        string strGameId = q["id"] ?? "";
+
+        int gameId = 0;
+        bool parsed = int.TryParse(strGameId, out gameId);
+
+        if (!parsed)
+        {
+            // nothing at this page
+            return;
+        }
+
+        Game = await Api.Games.GetGameById(gameId);
+
+        Console.WriteLine(Game.DisplayName);
+
+    }
+}

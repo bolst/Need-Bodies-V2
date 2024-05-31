@@ -1,0 +1,111 @@
+@page "/auth"
+@using NeedBodies.Auth
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+@inject UserService userService
+
+<AuthorizeView>
+    <Authorized>
+        <Button Color="Color.Primary" Clicked="LogOutAsync">Log out</Button>
+    </Authorized>
+    <NotAuthorized>
+
+<Row RowColumns="RowColumns.Are2">
+
+    <Column ColumnSize="ColumnSize.Is4.OnDesktop.Is12" Padding="Padding.Is4">
+        <Lead TextSize="TextSize.ExtraLarge">Log in to Need Bodies</Lead>
+
+        <Divider />
+
+        <Field>
+            <FieldLabel TextSize="TextSize.Small">
+                Username
+            </FieldLabel>
+            <FieldBody>
+                <TextEdit Border="Border.Is4.Dark.OnBottom.Is0.OnAll" Background="Background.Light"
+                    @bind-Text="@inputUsername" />
+            </FieldBody>
+        </Field>
+        <Field>
+            <FieldLabel TextSize="TextSize.Small">
+                Password
+            </FieldLabel>
+            <FieldBody>
+                <TextEdit Border="Border.Is4.Dark.OnBottom.Is0.OnAll" Background="Background.Light"
+                    Role="TextRole.Password" @bind-Text="@inputPassword" />
+            </FieldBody>
+        </Field>
+        <Field>
+            <FieldBody>
+                <Button Background="Background.Primary" Width="Width.Is100" TextColor="TextColor.Light"
+                    Clicked="LogInAsync">Continue
+                    <Icon Name="IconName.ArrowRight" />
+                </Button>
+            </FieldBody>
+        </Field>
+
+        <Alert Color="Color.Light" TextColor="TextColor.Danger" @bind-Visible="@alertVisible">
+            <AlertDescription>
+                Invalid username/password
+            </AlertDescription>
+        </Alert>
+
+        <Divider />
+
+        <Lead TextSize="TextSize.ExtraLarge">Don't have an account?</Lead>
+        <Button Background="Background.Light" Width="Width.Is100" TextColor="TextColor.Primary"
+            Clicked='() => navManager.NavigateTo("/signup")'>Create an
+            account
+            <Icon Name="IconName.ArrowRight" />
+        </Button>
+    </Column>
+
+    <Column ColumnSize="ColumnSize.Is8" Position="Position.Relative" TextAlignment="TextAlignment.Center"
+        Class="login-side" Display="Display.Block.OnDesktop.None">
+    </Column>
+
+</Row>
+    </NotAuthorized>
+</AuthorizeView>
+
+<style>
+    .login-side {
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5)), url('mcdavid.webp');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+</style>
+
+@code {
+
+    bool alertVisible = false;
+    string inputUsername { get; set; } = "";
+    string inputPassword { get; set; } = "";
+
+    async Task LogInAsync()
+    {
+        User? user = userService.GetByUsername(inputUsername);
+        if (user == null || await Api.Auth.Validate(inputUsername, inputPassword) == false)
+        {
+            alertVisible = true;
+            return;
+        }
+
+        var userAuthStateProvider = (UserAuthenticationStateProvider)authStateProvider;
+        await userAuthStateProvider.UpdateAuthenticationState(new UserSession
+            {
+                Username = user.Username,
+                ID = user.ID,
+            });
+        navManager.NavigateTo("/", true);
+    }
+
+    async Task LogOutAsync()
+    {
+        var userAuthStateProvider = (UserAuthenticationStateProvider)authStateProvider;
+        await userAuthStateProvider.UpdateAuthenticationState(null);
+        navManager.NavigateTo("/", true);
+    }
+}

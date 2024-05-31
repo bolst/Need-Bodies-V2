@@ -9,8 +9,24 @@
       "PackagePath": "staticwebassets/css/blazor-ui.css"
     },
     {
+      "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/css/fonts/IBMPlexSans-Bold.ttf",
+      "PackagePath": "staticwebassets/css/fonts/IBMPlexSans-Bold.ttf"
+    },
+    {
+      "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/css/fonts/IBMPlexSans-Regular.ttf",
+      "PackagePath": "staticwebassets/css/fonts/IBMPlexSans-Regular.ttf"
+    },
+    {
       "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/favicon.ico",
       "PackagePath": "staticwebassets/favicon.ico"
+    },
+    {
+      "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/mackinnon.png",
+      "PackagePath": "staticwebassets/mackinnon.png"
+    },
+    {
+      "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/mcdavid.webp",
+      "PackagePath": "staticwebassets/mcdavid.webp"
     },
     {
       "Id": "obj/Debug/net6.0/staticwebassets/msbuild.NeedBodies.Microsoft.AspNetCore.StaticWebAssets.props",

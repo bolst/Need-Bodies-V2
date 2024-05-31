@@ -11,5 +11,7 @@ namespace NeedBodies.Data
         [JsonPropertyName("postal")] public string Postal { get; set; }
         [JsonPropertyName("country")] public string Country { get; set; }
         [JsonPropertyName("website")] public string Website { get; set; }
+        [JsonPropertyName("lat")] public string Lat { get; set; }
+        [JsonPropertyName("lon")] public string Lon { get; set; }
     }
 }

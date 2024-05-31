@@ -26,3 +26,19 @@
 .blazor-error-boundary::after {
     content: "An error has occurred."
 }
+
+@font-face {
+    font-family: "IBMPlexSans";
+    src: url('fonts/IBMPlexSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: "IBMPlexSans-Bold";
+    src: url('fonts/IBMPlexSans-Bold.ttf');
+    font-weight: bold;
+}
+
+html,
+body {
+    font-family: 'IBMPlexSans', 'sans-serif';
+}

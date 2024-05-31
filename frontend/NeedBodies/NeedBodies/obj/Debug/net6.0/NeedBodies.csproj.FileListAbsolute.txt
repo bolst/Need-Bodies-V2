@@ -43,3 +43,4 @@
 /Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/obj/Debug/net6.0/NeedBodies.pdb
 /Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/obj/Debug/net6.0/NeedBodies.genruntimeconfig.cache
 /Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/obj/Debug/net6.0/ref/NeedBodies.dll
+/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/bin/Debug/net6.0/BlazorLeaflet.dll

@@ -1,0 +1,10 @@
+@page "/usergames"
+@inject NavigationManager navManager
+
+<AuthorizeView>
+    <Authorized>
+    </Authorized>
+    <NotAuthorized>
+        @{navManager.NavigateTo("/auth");}
+    </NotAuthorized>
+</AuthorizeView>

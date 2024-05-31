@@ -1,0 +1,53 @@
+@namespace NeedBodies.Components
+@inject NavigationManager navManager
+
+@if (game != null)
+{
+    <Div Background="Background.Light" TextWeight="TextWeight.Bold" Flex="Flex.JustifyContent.Between.AlignItems.Center"
+    TextAlignment="TextAlignment.Center" Position="Position.Relative" Padding="Padding.Is2.OnY" Class="@hoverImageClass"
+    @onmouseout="@OnMouseOut" @onmouseover="@OnMouseOver" @onclick="OnClickGoToGame">
+
+    <Lead TextSize="TextSize.Small" Margin="Margin.IsAuto.OnY" Padding="Padding.Is2.FromStart">@game.DisplayName</Lead>
+    <Badge Color="Color.Light" Margin="Margin.Is1.OnX.OnMobile">@game.Date.ToString("M/dd hh:mm tt")</Badge>
+
+</Div>
+}
+
+<style>
+    .hovering {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+</style>
+
+@code {
+
+    bool isHovering = false;
+    string hoverImageClass = "";
+    protected void OnMouseOver(MouseEventArgs mouseEvent)
+    {
+        if (!isHovering)
+        {
+            isHovering = true;
+            hoverImageClass = "hovering";
+            StateHasChanged();
+        }
+    }
+    protected void OnMouseOut(MouseEventArgs mouseEvent)
+    {
+        hoverImageClass = "";
+        isHovering = false;
+        StateHasChanged();
+    }
+
+    [Parameter] public Data.Game? game { get; set; } = null;
+
+    void OnClickGoToGame()
+    {
+        if (game != null)
+        {
+            navManager.NavigateTo("/gamepage?id=" + game.Id);
+        }
+    }
+
+}
