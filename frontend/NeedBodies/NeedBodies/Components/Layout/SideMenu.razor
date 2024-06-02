@@ -1,4 +1,8 @@
-﻿<Bar NavigationBreakpoint="Breakpoint.Tablet" ThemeContrast="ThemeContrast.Dark" Mode="BarMode.VerticalInline"
+﻿@using NeedBodies.Auth
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+
+<Bar NavigationBreakpoint="Breakpoint.Tablet" ThemeContrast="ThemeContrast.Dark" Mode="BarMode.VerticalInline"
     CollapseMode="BarCollapseMode.Small" Background="Background.Dark" Visible=false>
     <BarBrand>
         <BarItem>
@@ -31,17 +35,35 @@
                             Add Game
                         </BarLink>
                     </BarItem>
-                    
+
                 </Authorized>
             </AuthorizeView>
         </BarStart>
         <BarEnd>
-            <BarItem>
-                <BarLink To="/auth">
-                    <BarIcon IconName="IconName.User" />
-                    Login
-                </BarLink>
-            </BarItem>
+            <AuthorizeView>
+                <Authorized>
+                    <BarItem>
+                        <BarLink To="/profile">
+                            <BarIcon IconName="IconName.UserCircle" />
+                            Profile
+                        </BarLink>
+                    </BarItem>
+                    <BarItem>
+                        <BarLink Clicked="LogOutAsync">
+                            <BarIcon IconName="IconName.ArrowLeft" />
+                            Logout
+                        </BarLink>
+                    </BarItem>
+                </Authorized>
+                <NotAuthorized>
+                    <BarItem>
+                        <BarLink To="/auth">
+                            <BarIcon IconName="IconName.User" />
+                            Login
+                        </BarLink>
+                    </BarItem>
+                </NotAuthorized>
+            </AuthorizeView>
         </BarEnd>
     </BarMenu>
 </Bar>
@@ -49,4 +71,11 @@
     private bool pagesBarVisible = true;
 
     RenderFragment customIcon =@<img src="/brand-logo.png" style="width:32px; height: 32px" />;
+
+        async Task LogOutAsync()
+    {
+        var userAuthStateProvider = (UserAuthenticationStateProvider)authStateProvider;
+        await userAuthStateProvider.UpdateAuthenticationState(null);
+        navManager.NavigateTo("/", true);
+    }
 }

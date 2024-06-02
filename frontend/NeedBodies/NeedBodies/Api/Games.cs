@@ -2,6 +2,7 @@ namespace NeedBodies.Api
 {
     using System.Text;
     using System.Text.Json;
+    using NeedBodies.Auth;
     using DataType = Data.Game;
     public static class Games
     {
@@ -55,6 +56,121 @@ namespace NeedBodies.Api
             {
                 Console.WriteLine("GetArenaListAsync:\n" + exc.ToString());
                 return new();
+            }
+        }
+
+        public static async Task<List<Data.Game>> GetHostGames(int host_id)
+        {
+            try
+            {
+                var response = await BaseApi.client.GetAsync(BaseApi.Endpoint + "/games?hid=" + host_id.ToString());
+                response.EnsureSuccessStatusCode();
+                List<Data.Game> retval = await response.Content.ReadFromJsonAsync<List<Data.Game>>() ?? new();
+                return retval;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("GetHostGames:\n" + exc.ToString());
+                return new();
+            }
+        }
+
+        public static async Task<List<Data.Game>> GetUserGames(int host_id)
+        {
+            try
+            {
+                var response = await BaseApi.client.GetAsync(BaseApi.Endpoint + "/games?uid=" + host_id.ToString());
+                response.EnsureSuccessStatusCode();
+                List<Data.Game> retval = await response.Content.ReadFromJsonAsync<List<Data.Game>>() ?? new();
+                return retval;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("GetUserGames:\n" + exc.ToString());
+                return new();
+            }
+        }
+
+        public static async Task<bool> AddUserToGameAsync(int uid, DataType game)
+        {
+            try
+            {
+                var gameID = game.Id;
+                var data = new Dictionary<string, object>
+                {
+                    { "game id", gameID },
+                    {"user id", uid}
+                };
+                var response = await BaseApi.client.PostAsJsonAsync(BaseApi.Endpoint + "/joingame", data);
+                response.EnsureSuccessStatusCode();
+                string retval = await response.Content.ReadAsStringAsync();
+                return retval == "success";
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("AddUserToGameAsync:\n" + exc.ToString());
+                return false;
+            }
+        }
+
+        public static async Task<List<User>> GetPlayersInGame(DataType game)
+        {
+            try
+            {
+                var gameID = game.Id;
+                var response = await BaseApi.client.GetAsync(BaseApi.Endpoint + "/users?gid=" + gameID.ToString());
+                response.EnsureSuccessStatusCode();
+                List<User> retval = await response.Content.ReadFromJsonAsync<List<User>>() ?? new();
+                return retval;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("GetPlayersInGame:\n" + exc.ToString());
+                return new();
+            }
+        }
+
+        public static async Task<bool> RemovePlayerFromGame(DataType game, int uid)
+        {
+            try
+            {
+                var gameID = game.Id;
+                var data = new Dictionary<string, object>
+                {
+                    { "game id", gameID },
+                    {"user id", uid}
+                };
+                var response = await BaseApi.client.PostAsJsonAsync(BaseApi.Endpoint + "/removeuser", data);
+                response.EnsureSuccessStatusCode();
+                string retval = await response.Content.ReadAsStringAsync();
+                return retval == "success";
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("RemovePlayerFromGame:\n" + exc.ToString());
+                return false;
+            }
+        }
+
+        public static async Task<bool> DeleteGame(DataType game, int uid)
+        {
+            try
+            {
+                var gameID = game.Id;
+                var data = new Dictionary<string, object>
+                {
+                    { "game id", gameID },
+                    {"user id", uid}
+                };
+                var response = await BaseApi.client.PostAsJsonAsync(BaseApi.Endpoint + "/deletegame", data);
+                response.EnsureSuccessStatusCode();
+                string retval = await response.Content.ReadAsStringAsync();
+                return retval == "success";
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("DeleteGame:\n" + exc.ToString());
+                return false;
             }
         }
 

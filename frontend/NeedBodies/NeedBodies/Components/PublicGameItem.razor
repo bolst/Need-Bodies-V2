@@ -1,16 +1,36 @@
 @namespace NeedBodies.Components
 @inject NavigationManager navManager
+@using NeedBodies.Auth
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+@inject ProtectedSessionStorage protectedSessionStorage
+@inject UserService userService
 
 @if (game != null)
 {
     <Div Background="Background.Light" TextWeight="TextWeight.Bold" Flex="Flex.JustifyContent.Between.AlignItems.Center"
-    TextAlignment="TextAlignment.Center" Position="Position.Relative" Padding="Padding.Is2.OnY" Class="@hoverImageClass"
-    @onmouseout="@OnMouseOut" @onmouseover="@OnMouseOver" @onclick="OnClickGoToGame">
+    TextAlignment="TextAlignment.Center" Position="Position.Relative" Padding="Padding.Is2.OnY"
+    Class="@hoverImageClass">
 
-    <Lead TextSize="TextSize.Small" Margin="Margin.IsAuto.OnY" Padding="Padding.Is2.FromStart">@game.DisplayName</Lead>
-    <Badge Color="Color.Light" Margin="Margin.Is1.OnX.OnMobile">@game.Date.ToString("M/dd hh:mm tt")</Badge>
+    <Lead TextSize="TextSize.Small" Margin="Margin.IsAuto.OnY" Padding="Padding.Is2.FromStart" @onmouseout="@OnMouseOut"
+        @onmouseover="@OnMouseOver" @onclick="OnClickGoToGame">@game.DisplayName</Lead>
+    <Badge Color="Color.Light" Margin="Margin.Is1.OnX.OnMobile" @onmouseout="@OnMouseOut" @onmouseover="@OnMouseOver"
+        @onclick="OnClickGoToGame">@game.Date.ToString("M/dd hh:mm tt")</Badge>
+    @if (Removable)
+        {
+            @if (clicked)
+            {
+                string linkText = Hosted ? "Delete Game?" : "Leave?";
+                <Blazorise.Link Unstyled TextColor="TextColor.Danger" Clicked="OnClickRemove">@linkText</Blazorise.Link>
+            }
+            else
+            {
+                <Icon Margin="Margin.Is1.OnX.OnMobile" Name="IconName.MinusSquare" @onmouseout="@OnMouseOut"
+                    @onmouseover="@OnMouseOver" @onclick="() => clicked = !clicked" />
+            }
+        }
 
-</Div>
+    </Div>
 }
 
 <style>
@@ -21,6 +41,11 @@
 </style>
 
 @code {
+
+    [Parameter] public bool Removable { get; set; } = false;
+    [Parameter] public bool Hosted { get; set; } = false;
+
+    bool clicked = false;
 
     bool isHovering = false;
     string hoverImageClass = "";
@@ -47,6 +72,38 @@
         if (game != null)
         {
             navManager.NavigateTo("/gamepage?id=" + game.Id);
+        }
+    }
+
+    async Task OnClickRemove()
+    {
+        var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
+        if (!userSession.Success)
+        {
+            return;
+        }
+        int currentUserID = userSession.Value.ID;
+        var user = userService.GetByID(currentUserID.ToString());
+        if (user == null) return;
+
+        // ---
+        if (game != null)
+        {
+            bool status = false;
+            if (Hosted)
+            {
+                status = await Api.Games.DeleteGame(game, currentUserID);
+                navManager.NavigateTo(navManager.Uri, true);
+            }
+            else
+            {
+                status = await Api.Games.RemovePlayerFromGame(game, currentUserID);
+                navManager.NavigateTo(navManager.Uri, true);
+            }
+        }
+        else
+        {
+            // TODO: handle error
         }
     }
 

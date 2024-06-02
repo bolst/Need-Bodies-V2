@@ -1,14 +1,14 @@
 @namespace NeedBodies.Components
 @inject NavigationManager navManager
 
-<Div Margin="Margin.Is5.OnX.OnDesktop">
-    <Heading Size="HeadingSize.Is3">Public Games</Heading>
+<Div>
+    <Heading Size="HeadingSize.Is3">@Title</Heading>
     @if (Games != null)
     {
         <Row>
             @foreach (Data.Game game in Games)
             {
-                <PublicGameItem game="@game" />
+                <PublicGameItem game="@game" Removable="@Removable" Hosted="@Hosted" />
             }
         </Row>
     }
@@ -16,11 +16,17 @@
 
     @code {
 
-    List<Data.Game>? Games = null;
+    [Parameter] public string Title { get; set; } = "Public Games";
+    [Parameter] public List<Data.Game>? Games { get; set; } = null;
+    [Parameter] public bool Hosted { get; set; } = false;
+    [Parameter] public bool Removable { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
-        Games = await Api.Games.GetPublicGameListAsync();
+        if (Games == null)
+        {
+            Games = await Api.Games.GetPublicGameListAsync();
+        }
     }
 
 

@@ -7,16 +7,24 @@
 </Row>
     <Row>
         <Paragraph>
-            @foreach(var player in players)
+            @foreach (var player in Players)
             {
-                <Button Background="Background.Transparent">@player</Button>
+                <Button Background="Background.Transparent">@player.Username</Button>
             }
-            </Paragraph>
+        </Paragraph>
     </Row>
 }
 
 @code {
     [Parameter] public Data.Game? Game { get; set; } = null;
 
-    List<string> players = new() { "John", "steven", "nic bolton", "chris bolton", "jack sexsmith", "landon prince", "aedan sullivan", "boe piroski", "josh cyrenne", "marco sladoje", "matteo frat", "ethan galvan"};
+    [Parameter] public List<Auth.User> Players { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Game != null)
+        {
+            Players = await Api.Games.GetPlayersInGame(Game);
+        }
+    }
 }

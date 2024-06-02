@@ -2,75 +2,78 @@
 
 <AuthorizeView>
     <Authorized>
-<Div Padding="Padding.Is4">
-    <Div Margin="Margin.IsAuto.OnX" Width="Width.Is75">
-        <Heading Size="HeadingSize.Is2" Margin="Margin.Is3.FromBottom">
-            Add Game
-        </Heading>
-        <Form>
-            <Fields>
-                <Field ColumnSize="ColumnSize.IsFull.OnTablet.IsHalf.OnDesktop">
-                    <FieldLabel>
-                        Display Name
-                    </FieldLabel>
-                    <FieldBody>
-                        <TextEdit Placeholder="" @bind-Text="@enteredDisplayName" />
-                    </FieldBody>
-                </Field>
-                <Field ColumnSize="ColumnSize.IsFull.OnTablet.IsHalf.OnDesktop">
-                    <FieldLabel>
-                        Visibility
-                    </FieldLabel>
-                    <FieldBody>
-                        <Select TValue="string" @bind-SelectedValue="@selectedVisibility">
-                            <SelectItem>Public</SelectItem>
-                            <SelectItem>Private</SelectItem>
-                        </Select>
-                    </FieldBody>
-                </Field>
-                <Field ColumnSize="ColumnSize.IsFull.OnTablet.IsHalf.OnDesktop">
-                    <FieldLabel>
-                        Date
-                    </FieldLabel>
-                    <FieldBody>
-                        <DateEdit TValue="DateTime" InputMode="DateInputMode.DateTime" @bind-Date="@selectedDate" />
-                    </FieldBody>
-                </Field>
-                <Field ColumnSize="ColumnSize.IsFull.OnTablet.IsHalf.OnDesktop">
-                    <FieldLabel>
-                        Arena
-                    </FieldLabel>
-                    <FieldBody>
-                        <Select TValue="string" @bind-SelectedValue="@selectedArenaName">
-                            @if (ArenaList != null)
-                            {
-                                foreach (Data.Arena arena in ArenaList)
-                                {
-                                    <SelectItem>@arena.Name</SelectItem>
-                                }
-                            }
-                        </Select>
-                    </FieldBody>
-                </Field>
-                <Field>
-                    <Button Color="Color.Primary" Clicked="AddGameAsync">
-                        Add Game
-                    </Button>
-                </Field>
-            </Fields>
-        </Form>
-    </Div>
-    <Div>
-        <Alert Color="Color.Danger" @bind-Visible="@alertVisible" Width="Width.Is50" Margin="Margin.IsAuto">
-            <AlertDescription>
-                @alertMessage
-            </AlertDescription>
-            <CloseButton Position="Position.Absolute.End" Padding="Padding.Is4.OnX" />
-        </Alert>
-    </Div>
-</Div>
+        <Div Padding="Padding.Is4">
+            <Div Margin="Margin.IsAuto.OnX" Width="Width.Is75">
+                <Heading Size="HeadingSize.Is2" Margin="Margin.Is3.FromBottom">
+                    Add Game
+                </Heading>
+                <Form>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.IsFull.OnTablet.IsHalf.OnDesktop">
+                            <FieldLabel>
+                                Display Name
+                            </FieldLabel>
+                            <FieldBody>
+                                <TextEdit Placeholder="" @bind-Text="@enteredDisplayName" />
+                            </FieldBody>
+                        </Field>
+                        <Field ColumnSize="ColumnSize.IsFull.OnTablet.IsHalf.OnDesktop">
+                            <FieldLabel>
+                                Visibility
+                            </FieldLabel>
+                            <FieldBody>
+                                <Select TValue="string" @bind-SelectedValue="@selectedVisibility">
+                                    <SelectItem>Public</SelectItem>
+                                    <SelectItem>Private</SelectItem>
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                        <Field ColumnSize="ColumnSize.IsFull.OnTablet.IsHalf.OnDesktop">
+                            <FieldLabel>
+                                Date
+                            </FieldLabel>
+                            <FieldBody>
+                                <DateEdit TValue="DateTime" InputMode="DateInputMode.DateTime"
+                                    @bind-Date="@selectedDate" />
+                            </FieldBody>
+                        </Field>
+                        <Field ColumnSize="ColumnSize.IsFull.OnTablet.IsHalf.OnDesktop">
+                            <FieldLabel>
+                                Arena
+                            </FieldLabel>
+                            <FieldBody>
+                                <Select TValue="string" @bind-SelectedValue="@selectedArenaName">
+                                    @if (ArenaList != null)
+                                    {
+                                        foreach (Data.Arena arena in ArenaList)
+                                        {
+                                            <SelectItem>@arena.Name</SelectItem>
+                                        }
+                                    }
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                        <Field>
+                            <Button Color="Color.Primary" TextColor="TextColor.Primary" Clicked="AddGameAsync" Outline>
+                                Submit
+                            </Button>
+                        </Field>
+                    </Fields>
+                </Form>
+            </Div>
+            <Div>
+                <Alert Color="Color.Danger" @bind-Visible="@alertVisible" Width="Width.Is50" Margin="Margin.IsAuto">
+                    <AlertDescription>
+                        @alertMessage
+                    </AlertDescription>
+                    <CloseButton Position="Position.Absolute.End" Padding="Padding.Is4.OnX" />
+                </Alert>
+            </Div>
+        </Div>
     </Authorized>
     <NotAuthorized>
-        @{navManager.NavigateTo("/auth");}
+        @{
+            navManager.NavigateTo("/auth");
+        }
     </NotAuthorized>
 </AuthorizeView>

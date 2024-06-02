@@ -38,6 +38,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvVG9wTWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Components/Profile/ProfileSection.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Qcm9maWxlL1Byb2ZpbGVTZWN0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Components/PublicGameItem.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QdWJsaWNHYW1lSXRlbS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -66,12 +70,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Pages/Profile.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJvZmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Pages/Signup.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2lnbnVwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Pages/UserGames.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVXNlckdhbWVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Pages/UserHostedGames.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVXNlckhvc3RlZEdhbWVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/_Imports.razor]

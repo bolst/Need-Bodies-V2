@@ -1,0 +1,21 @@
+@namespace NeedBodies.Components
+
+<Row Background="Background.Light" Padding="Padding.Is4.OnX.OnTablet.Is0.OnMobile" Margin="Margin.IsAuto">
+    <Lead TextSize="TextSize.ExtraLarge" Padding="Padding.Is3.FromTop">@Header &nbsp @IconFragment()</Lead>
+    <Divider />
+    @ChildContent
+</Row>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Header { get; set; } = "";
+    [Parameter] public IconName? iconName { get; set; } = null;
+
+    public RenderFragment IconFragment() => __builder =>
+    {
+        @if (iconName != null)
+        {
+            <Icon Name="@iconName" />
+        }
+    };
+}

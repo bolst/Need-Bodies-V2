@@ -1,4 +1,9 @@
 @page "/gamepage"
+@using NeedBodies.Auth
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+@inject ProtectedSessionStorage protectedSessionStorage
+@inject UserService userService
 @inject NavigationManager navManager
 
 @if (Game != null)
@@ -18,15 +23,36 @@
                 <Lead Padding="Padding.Is4.FromStart">@Game.ArenaName</Lead>
             </Column>
         </Row>
+
+        <Divider />
+
+        <AuthorizeView>
+            <Div>
+                <Authorized>
+                    <Button TextColor="TextColor.Primary" Clicked="JoinGameAsync">Join Game</Button>
+                </Authorized>
+            </Div>
+        </AuthorizeView>
     </Div>
 }
 
 
 @code {
     Data.Game? Game { get; set; } = null;
+    User? user = null;
+
 
     protected override async Task OnInitializedAsync()
     {
+        var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
+        if (userSession.Success)
+        {
+            int currentUserID = userSession.Value.ID;
+            user = userService.GetByID(currentUserID.ToString());
+        }
+
+        // ---
+
         var uriBuilder = new UriBuilder(navManager.Uri);
         var q = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
         string strGameId = q["id"] ?? "";
@@ -44,5 +70,14 @@
 
         Console.WriteLine(Game.DisplayName);
 
+    }
+
+    async Task JoinGameAsync()
+    {
+        if (user != null && Game != null)
+        {
+            await Api.Games.AddUserToGameAsync(user.ID, Game);
+            navManager.NavigateTo("/");
+        }
     }
 }

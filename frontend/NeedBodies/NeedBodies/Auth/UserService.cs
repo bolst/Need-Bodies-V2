@@ -34,7 +34,7 @@ namespace NeedBodies.Auth
         public async Task InitAsync()
         {
             var users = await Api.Auth.GetUsers();
-            _users = users;
+            _users = users ?? new();
         }
 
     }

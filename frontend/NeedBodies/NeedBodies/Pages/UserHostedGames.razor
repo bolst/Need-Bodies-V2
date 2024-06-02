@@ -1,4 +1,4 @@
-@page "/usergames"
+@page "/hostgames"
 @using NeedBodies.Auth
 @inject NavigationManager navManager
 @inject UserService userService
@@ -7,11 +7,11 @@
 <AuthorizeView>
     <Authorized>
 
-        @if (userGames != null)
+        @if (hostGames != null)
         {
             <Div Padding="Padding.Is4">
                 <Div Margin="Margin.Is2.OnMobile.Is5.OnX.OnDesktop">
-                    <PublicGamesTable Title="Registered Games" Games="@userGames" />
+                    <PublicGamesTable Title="Registered Games" Games="@hostGames" />
                 </Div>
             </Div>
         }
@@ -26,7 +26,7 @@
 
 @code {
 
-    List<Data.Game>? userGames = null;
+    List<Data.Game>? hostGames = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,7 +41,7 @@
 
         // ---
 
-        userGames = await Api.Games.GetUserGames(currentUserID);
+        hostGames = await Api.Games.GetHostGames(currentUserID);
 
 
     }
