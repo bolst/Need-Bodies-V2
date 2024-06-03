@@ -8,8 +8,8 @@
 
 @if (Game != null)
 {
-    <Row Style="background-color: #dfe4f0">
-    <DisplayHeading Padding="Padding.Is4">@Game.DisplayName</DisplayHeading>
+    <Row Style="background-color: #dfe4f0" Padding="Padding.Is4">
+    <DisplayHeading>@Game.DisplayName</DisplayHeading>
 </Row>
     <Div Padding="Padding.Is4">
         <Row RowColumns="RowColumns.Are2.OnTablet.Are1.OnMobile">
@@ -28,9 +28,7 @@
 
         <AuthorizeView>
             <Div>
-                <Authorized>
-                    <Button TextColor="TextColor.Primary" Clicked="JoinGameAsync">Join Game</Button>
-                </Authorized>
+                @GameOptions()
             </Div>
         </AuthorizeView>
     </Div>
@@ -41,9 +39,23 @@
     Data.Game? Game { get; set; } = null;
     User? user = null;
 
+    RenderFragment GameOptions() => __builder =>
+    {
+        @if (user != null && Game != null && user.HostedGames.Contains(Game.Id))
+        {
+            string linkDest = "/managegame?id=" + Game.Id;
+            <Button TextColor="TextColor.Primary" Type="ButtonType.Link" To=@linkDest>Manage
+                Game</Button>
+        }
+        <Authorized>
+            <Button TextColor="TextColor.Primary" Clicked="JoinGameAsync">Join Game</Button>
+        </Authorized>
+    };
+
 
     protected override async Task OnInitializedAsync()
     {
+        await userService!.InitAsync();
         var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
         if (userSession.Success)
         {

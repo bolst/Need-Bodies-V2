@@ -2,10 +2,12 @@ namespace NeedBodies.Api
 {
     using System.Text;
     using System.Text.Json;
+    using Microsoft.AspNetCore.Components;
     using NeedBodies.Auth;
     using DataType = Data.Game;
     public static class Games
     {
+
         public static async Task<List<DataType>?> GetPublicGameListAsync()
         {
             try
@@ -33,6 +35,9 @@ namespace NeedBodies.Api
                 };
                 var response = await BaseApi.client.PostAsJsonAsync(BaseApi.Endpoint + "/addgame", data);
                 response.EnsureSuccessStatusCode();
+
+
+
                 string retval = await response.Content.ReadAsStringAsync();
                 return retval == "success";
             }

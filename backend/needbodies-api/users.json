@@ -1,1 +1,1 @@
-{"users": [{"username": "nicbolton", "password": "hockey", "email": "nicbolton17@icloud.com", "id": 1, "games": [1], "hosted games": [1, 1, 1, 1]}]}
+{"users": [{"username": "nicbolton", "password": "hockey", "email": "nicbolton17@icloud.com", "id": 1, "games": [1], "hosted games": [1, 2, 3]}, {"username": "chrisbolton", "password": "hockey", "email": "chris8bolton@icloud.com", "id": 2, "games": [], "hosted games": []}]}

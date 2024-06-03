@@ -140,7 +140,7 @@ def deleteGame():
     with open('users.json', 'r') as f:
         user_data = json.load(f)
         
-    user_data = removeUserFromGame(user_data, user_id, game_id)
+    user_data = removeUserFrom('hosted game', user_data, user_id, game_id)
     
     with open(join(dir,'users.json'), 'w') as f:
         json.dump(user_data, f)
@@ -163,17 +163,17 @@ def removeUserFromGame():
     with open('users.json', 'r') as f:
         user_data = json.load(f)
         
-    user_data = removeUserFromGame(user_data, user_id, game_id)
+    user_data = removeUserFrom('game', user_data, user_id, game_id)
     
     with open(join(dir,'users.json'), 'w') as f:
         json.dump(user_data, f)
     
     return 'success'
 
-def removeUserFromGame(user_data, user_id, game_id):
+def removeUserFrom(key, user_data, user_id, game_id):
     for i,user in enumerate(user_data['users']):
         if user['id'] == user_id:
-            user_data['users'][i]['games'] = [game for game in user['games'] if game != game_id]
+            user_data['users'][i][key] = [game for game in user[key] if game != game_id]
     return user_data
             
 
@@ -182,7 +182,7 @@ def mapGameToHost(gameID, user_id):
         user_data = json.load(f)
         
     for i,user in enumerate(user_data['users']):
-        if user['id'] == user_id:
+        if user['id'] == user_id and gameID not in user['hosted games']:
             user_data['users'][i]['hosted games'].append(gameID)
     
     with open(join(dir, 'users.json'), 'w') as f:
