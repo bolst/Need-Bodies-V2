@@ -59,7 +59,7 @@
         var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
         if (userSession.Success)
         {
-            int currentUserID = userSession.Value.ID;
+            int currentUserID = userSession!.Value!.ID;
             user = userService.GetByID(currentUserID.ToString());
         }
 

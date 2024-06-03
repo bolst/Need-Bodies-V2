@@ -140,7 +140,7 @@ def deleteGame():
     with open('users.json', 'r') as f:
         user_data = json.load(f)
         
-    user_data = removeUserFrom('hosted game', user_data, user_id, game_id)
+    user_data = removeUserFrom('hosted games', user_data, user_id, game_id)
     
     with open(join(dir,'users.json'), 'w') as f:
         json.dump(user_data, f)
@@ -163,7 +163,7 @@ def removeUserFromGame():
     with open('users.json', 'r') as f:
         user_data = json.load(f)
         
-    user_data = removeUserFrom('game', user_data, user_id, game_id)
+    user_data = removeUserFrom('games', user_data, user_id, game_id)
     
     with open(join(dir,'users.json'), 'w') as f:
         json.dump(user_data, f)
