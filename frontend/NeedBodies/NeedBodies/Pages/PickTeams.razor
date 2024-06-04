@@ -1,0 +1,46 @@
+@page "/managegame/pickteams"
+@using System.Linq
+@using NeedBodies.Auth
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+@inject ProtectedSessionStorage protectedSessionStorage
+@inject UserService userService
+
+@if (Game != null)
+{
+    <Div Padding="Padding.Is4">
+    <TeamPicker Game="@Game" />
+</Div>
+}
+
+@code {
+    User? user = null;
+    Data.Game? Game = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
+        if (userSession.Success)
+        {
+            int currentUserID = userSession!.Value!.ID;
+            user = userService!.GetByID(currentUserID.ToString());
+        }
+
+        // ---
+
+        var uriBuilder = new UriBuilder(navManager.Uri);
+        var q = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
+        string strGameId = q["id"] ?? "";
+
+        int gameId = 0;
+        bool parsed = int.TryParse(strGameId, out gameId);
+
+        if (!parsed)
+        {
+            // nothing at this page
+            return;
+        }
+        Game = await Api.Games.GetGameById(gameId);
+
+    }
+}

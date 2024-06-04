@@ -96,7 +96,7 @@ namespace NeedBodies.Api
             }
         }
 
-        public static async Task<bool> AddUserToGameAsync(int uid, DataType game)
+        public static async Task<bool> AddUserToGameAsync(int uid, DataType game, string child_name = "")
         {
             try
             {
@@ -104,7 +104,8 @@ namespace NeedBodies.Api
                 var data = new Dictionary<string, object>
                 {
                     { "game id", gameID },
-                    {"user id", uid}
+                    {"user id", uid},
+                    {"child name", child_name},
                 };
                 var response = await BaseApi.client.PostAsJsonAsync(BaseApi.Endpoint + "/joingame", data);
                 response.EnsureSuccessStatusCode();
@@ -135,7 +136,7 @@ namespace NeedBodies.Api
             }
         }
 
-        public static async Task<bool> RemovePlayerFromGame(DataType game, int uid)
+        public static async Task<bool> RemovePlayerFromGame(DataType game, int uid, string child_name = "")
         {
             try
             {
@@ -143,7 +144,8 @@ namespace NeedBodies.Api
                 var data = new Dictionary<string, object>
                 {
                     { "game id", gameID },
-                    {"user id", uid}
+                    {"user id", uid},
+                    {"child name", child_name},
                 };
                 var response = await BaseApi.client.PostAsJsonAsync(BaseApi.Endpoint + "/removeuser", data);
                 response.EnsureSuccessStatusCode();
@@ -175,6 +177,29 @@ namespace NeedBodies.Api
             catch (Exception exc)
             {
                 Console.WriteLine("DeleteGame:\n" + exc.ToString());
+                return false;
+            }
+        }
+
+        public static async Task<bool> CycleUserTeam(DataType game, int uid, string childName = "")
+        {
+            try
+            {
+                var gameID = game.Id;
+                var data = new Dictionary<string, object>
+                {
+                    { "game id", gameID },
+                    {"user id", uid },
+                    {"child name", childName}
+                };
+                var response = await BaseApi.client.PostAsJsonAsync(BaseApi.Endpoint + "/cycleut", data);
+                response.EnsureSuccessStatusCode();
+                string retval = await response.Content.ReadAsStringAsync();
+                return retval == "success";
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("CycleUserTeam:\n" + exc.ToString());
                 return false;
             }
         }

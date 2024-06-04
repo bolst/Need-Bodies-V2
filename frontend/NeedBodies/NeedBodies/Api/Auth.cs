@@ -29,13 +29,14 @@ namespace NeedBodies.Api
             }
         }
 
-        public static async Task<(string, int)> AddUser(string username, string email, string password)
+        public static async Task<(string, int)> AddUser(string username, string email, string password, string parent_id = "")
         {
             var userInfo = new Dictionary<string, string>
                 {
                     {"username", username},
                     {"password", password},
-                    {"email", email}
+                    {"email", email},
+                    {"parent id", parent_id},
                 };
             var json = JsonSerializer.Serialize(userInfo);
             var strJson = new StringContent(json, Encoding.UTF8, "application/json");
@@ -53,6 +54,11 @@ namespace NeedBodies.Api
                 Console.WriteLine("AddUser:\n" + exc.ToString());
                 return ("Something went wrong", 0);
             }
+        }
+
+        public static async Task<bool> AddNonUserPlayer(int currentUID, string name)
+        {
+            return (await AddUser(name, "", "", currentUID.ToString())).Item1 == "success";
         }
 
         public static async Task<List<User>?> GetUsers()

@@ -1,13 +1,155 @@
 @namespace NeedBodies.Components
+@using System.Linq
 @using NeedBodies.Auth
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+@inject ProtectedSessionStorage protectedSessionStorage
+@inject UserService userService
 
-<span>Player stuff</span>
-
-@if (Game != null)
+    <Div Padding="Padding.Is4">
+@if (usersInGame != null && usersBenched != null && nonUsersInGame != null && nonUsersBenched != null)
 {
-    <span>@Game.DisplayName</span>
+<Row RowColumns="RowColumns.Are1" Padding="Padding.Is4.FromBottom">
+    <Column ColumnSize="ColumnSize.Is8.OnTablet.Is12.OnMobile">
+        <Button Color="Color.Primary" Clicked="() => modalRef.Show()" Outline>Add non-user</Button>
+        <Button Color="Color.Primary" Clicked='() => navManager.NavigateTo("/managegame/pickteams?id=" + Game.Id)' Outline>Pick teams</Button>
+    </Column>
+</Row>
+    <Row>
+        <Lead>Playing (@(usersInGame.Count() + nonUsersInGame.Count()))</Lead>
+    </Row>
+    @foreach (User user in usersInGame)
+        {
+            @PlayerInGameFragment(user)
+        }
+    @foreach (Data.NonUserPlayer user in nonUsersInGame)
+        {
+            @NonUserInGameFragment(user)
+        }
+
+        <Divider />
+
+        <Row>
+            <Lead>Benched (@(usersBenched.Count() + nonUsersBenched.Count()))</Lead>
+        </Row>
+        @foreach (User user in usersBenched)
+        {
+            @PlayerBenchedFragment(user)
+        }
+            @foreach (Data.NonUserPlayer user in nonUsersBenched)
+        {
+            @NonUserBenchedFragment(user)
+        }
 }
+        </Div>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Add Player</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Name</FieldLabel>
+                <TextEdit Placeholder="Enter name..." @bind-Text="@modalInputName" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Info" Clicked="() => modalRef.Hide()">Close</Button>
+            <Button Color="Color.Primary" Clicked="ModalAddPlayer">Add</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 
 @code {
+    private Modal modalRef;
+    private string modalInputName {get; set;} = "";
+    private async Task ModalAddPlayer()
+    {        
+        var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
+        if (userSession.Success)
+        {
+            int currentUserID = userSession!.Value!.ID;
+            await Api.Auth.AddNonUserPlayer(currentUserID, modalInputName);
+
+            // reset modal
+            modalInputName = "";
+            await modalRef.Hide();
+            await LoadData();
+        }
+    }
+
+    int currentUserID = -1;
+
     [Parameter] public Data.Game? Game { get; set; } = null;
+    List<User>? usersInGame = null;
+    List<User>? usersBenched = null;
+    List<Data.NonUserPlayer>? nonUsersInGame = null;
+    List<Data.NonUserPlayer>? nonUsersBenched = null;
+
+    RenderFragment PlayerInGameFragment(User user) => __builder =>
+    {
+        <Button Clicked="async () => await RemoveInGamePlayer(Game, user.ID)">@user.Username</Button>
+    };
+    async Task RemoveInGamePlayer(Data.Game game, int userID)
+    {
+        await Api.Games.RemovePlayerFromGame(game, userID);
+        await LoadData();
+    }
+    RenderFragment PlayerBenchedFragment(User user) => __builder =>
+    {
+        <Button Clicked="async () => await AddBenchedPlayer(Game, user.ID)">@user.Username</Button>
+    };
+    async Task AddBenchedPlayer(Data.Game game, int userID)
+    {
+        await Api.Games.AddUserToGameAsync(userID, game);
+        await LoadData();
+    }
+
+    RenderFragment NonUserInGameFragment(Data.NonUserPlayer user) => __builder =>
+    {
+        <Button Clicked="async () => await RemoveInGameNonUser(Game, currentUserID, user.Name)" TextColor="TextColor.Danger">@user.Name</Button>
+    };
+    async Task RemoveInGameNonUser(Data.Game game, int userID, string name)
+    {
+        await Api.Games.RemovePlayerFromGame(game, userID, name);
+        await LoadData();
+    }
+    RenderFragment NonUserBenchedFragment(Data.NonUserPlayer user) => __builder =>
+    {
+        <Button Clicked="async () => await AddBenchedNonUser(Game, currentUserID, user.Name)" TextColor="TextColor.Danger">@user.Name</Button>
+    };
+        async Task AddBenchedNonUser(Data.Game game, int userID, string name)
+    {
+        await Api.Games.AddUserToGameAsync(userID, game, name);
+        await LoadData();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    async Task LoadData()
+    {
+        if (Game != null)
+        {
+            await userService.InitAsync();
+            usersInGame = await Api.Games.GetPlayersInGame(Game);
+            var allUsers = await Api.Auth.GetUsers() ?? new();
+            usersBenched = allUsers.Where(p => !usersInGame.Any(l => p.ID == l.ID)).ToList();
+            
+            var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
+            if (userSession.Success)
+            {
+                currentUserID = userSession!.Value!.ID;
+                var nonUsers = userService!.GetByID(currentUserID.ToString())!.NonUsers;
+                nonUsersInGame = nonUsers.Where(x => x.Games.Any(y => y.GameID == Game.Id)).ToList();
+                nonUsersBenched = nonUsers.Where(x => !x.Games.Any(y => y.GameID == Game.Id)).ToList();
+            }
+        }
+
+    }
 }

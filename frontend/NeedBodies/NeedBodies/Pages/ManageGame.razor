@@ -6,7 +6,9 @@
 @inject UserService userService
 @inject NavigationManager navManager
 
-<Div Padding="Padding.Is4">
+@if (Game != null)
+{
+    <Div Padding="Padding.Is4">
     <Tabs SelectedTab="players">
         <Items>
             <Tab Name="players">Players</Tab>
@@ -22,6 +24,7 @@
         </Content>
     </Tabs>
 </Div>
+}
 
 @code {
 
@@ -51,7 +54,7 @@
             // nothing at this page
             return;
         }
-
         Game = await Api.Games.GetGameById(gameId);
+
     }
 }

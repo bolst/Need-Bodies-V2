@@ -1,0 +1,132 @@
+@namespace NeedBodies.Components
+@using System.Linq
+@using NeedBodies.Auth
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+@inject ProtectedSessionStorage protectedSessionStorage
+@inject UserService userService
+
+
+@if (Game != null && usersInGame != null && nonUsersInGame != null)
+{
+    <Lead Padding="Padding.Is4.FromTop">Unassigned</Lead>
+    @foreach (User user in usersInGame)
+    {
+        @UnassignedPlayerFragment(user, Game.Id, 0)
+    }
+    @foreach (Data.NonUserPlayer user in nonUsersInGame)
+    {
+        @UnassignedPlayerFragment(user, Game.Id, 0)
+    }
+
+    <Lead Padding="Padding.Is4.FromTop">Team 1</Lead>
+    @foreach (User user in usersInGame)
+    {
+        @UnassignedPlayerFragment(user, Game.Id, 1)
+    }
+    @foreach (Data.NonUserPlayer user in nonUsersInGame)
+    {
+        @UnassignedPlayerFragment(user, Game.Id, 1)
+    }
+
+    <Lead Padding="Padding.Is4.FromTop">Team 2</Lead>
+    @foreach (User user in usersInGame)
+    {
+        @UnassignedPlayerFragment(user, Game.Id, 2)
+    }
+    @foreach (Data.NonUserPlayer user in nonUsersInGame)
+    {
+        @UnassignedPlayerFragment(user, Game.Id, 2)
+    }
+}
+
+@code {
+
+    RenderFragment UnassignedPlayerFragment(User user, int gameId, int teamNum) => __builder =>
+    {
+        @if (user.Teams.Any(x => x.GameID == gameId && x.Team == teamNum))
+        {
+            <Button TextColor="@nameColorMap[teamNum]" Clicked="async () => await CycleUserTeamAsync(user)">@user.Username</Button>
+        }
+    };
+    async Task CycleUserTeamAsync(User user)
+    {
+        if (Game != null)
+        {
+            await Api.Games.CycleUserTeam(Game, user.ID);
+            await LoadData();
+        }
+    }
+    RenderFragment UnassignedPlayerFragment(Data.NonUserPlayer user, int gameId, int teamNum) => __builder =>
+    {
+        @if (user.Games.Any(x => x.GameID == gameId && x.Team == teamNum))
+        {
+            <Button TextColor="@nameColorMap[teamNum]" Clicked="async() => await CycleNonUserTeamAsync(user)">@user.Name</Button>
+        }
+    };
+    async Task CycleNonUserTeamAsync(Data.NonUserPlayer user)
+    {
+        if (Game != null && currentUserID != -1)
+        {
+            await Api.Games.CycleUserTeam(Game, currentUserID, user.Name);
+            await LoadData();
+        }
+    }
+
+    int currentUserID = -1;
+
+    Dictionary<int, TextColor> nameColorMap = new Dictionary<int, TextColor>{
+{0, TextColor.Dark},
+{1, TextColor.Danger},
+{2, TextColor.Primary}
+};
+
+    [Parameter] public Data.Game? Game { get; set; } = null;
+    List<User>? usersInGame = null;
+    List<Data.NonUserPlayer>? nonUsersInGame = null;
+
+    RenderFragment PlayerInGameFragment(User user) => __builder =>
+    {
+        <Button Clicked="async () => await RemoveInGamePlayer(Game, user.ID)">@user.Username</Button>
+    };
+    async Task RemoveInGamePlayer(Data.Game game, int userID)
+    {
+        await Api.Games.RemovePlayerFromGame(game, userID);
+        await LoadData();
+    }
+
+    RenderFragment NonUserInGameFragment(Data.NonUserPlayer user) => __builder =>
+    {
+        <Button Clicked="async () => await RemoveInGameNonUser(Game, currentUserID, user.Name)"
+            TextColor="TextColor.Danger">@user.Name</Button>
+    };
+    async Task RemoveInGameNonUser(Data.Game game, int userID, string name)
+    {
+        await Api.Games.RemovePlayerFromGame(game, userID, name);
+        await LoadData();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    async Task LoadData()
+    {
+        if (Game != null)
+        {
+            await userService.InitAsync();
+            usersInGame = await Api.Games.GetPlayersInGame(Game);
+            var allUsers = await Api.Auth.GetUsers() ?? new();
+
+            var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
+            if (userSession.Success)
+            {
+                currentUserID = userSession!.Value!.ID;
+                var nonUsers = userService!.GetByID(currentUserID.ToString())!.NonUsers;
+                nonUsersInGame = nonUsers.Where(x => x.Games.Any(y => y.GameID == Game.Id)).ToList();
+            }
+        }
+
+    }
+}

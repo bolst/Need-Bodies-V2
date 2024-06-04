@@ -1,4 +1,6 @@
+using System.Security.AccessControl;
 using System.Text.Json.Serialization;
+using NeedBodies.Data;
 
 namespace NeedBodies.Auth
 {
@@ -19,6 +21,13 @@ namespace NeedBodies.Auth
 
         [JsonPropertyName("hosted games")]
         public List<int> HostedGames { get; set; }
+
+        [JsonPropertyName("non users")]
+        public List<NonUserPlayer> NonUsers { get; set; }
+
+        [JsonPropertyName("teams")]
+        public List<UserTeam> Teams { get; set; }
+
 
 
         public async Task<bool> CheckPassword(string attempt)

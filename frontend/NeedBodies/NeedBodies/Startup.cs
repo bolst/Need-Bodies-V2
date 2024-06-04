@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using NeedBodies.Auth;
 
 namespace NeedBodies;
-
+// dotnet publish -c Release -o ./bin/Publish
 public class Startup
 {
     // This method gets called by the runtime. Use this method to add services to the container.
