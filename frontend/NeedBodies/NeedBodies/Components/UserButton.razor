@@ -1,0 +1,13 @@
+@namespace NeedBodies.Components
+
+@if (User != null)
+{
+    <Button Background="@Background" TextColor="@Color" Type="ButtonType.Link"
+    To='@("/profile?id=" + User.ID)'>@User.Username</Button>
+}
+
+@code {
+    [Parameter] public Auth.User? User { get; set; } = null;
+    [Parameter] public TextColor Color { get; set; } = TextColor.Dark;
+    [Parameter] public Background Background { get; set; } = Background.Transparent;
+}

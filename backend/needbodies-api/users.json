@@ -1,1 +1,262 @@
-{"users": [{"username": "nicbolton", "password": "hockey", "email": "nicbolton17@icloud.com", "id": 1, "games": [1], "hosted games": [1, 2], "non users": [{"name": "lucas stoy", "games": [{"game id": 1, "team": 0}]}, {"name": "roman falsetta", "games": [{"game id": 1, "team": 0}]}, {"name": "connor kelly", "games": [{"game id": 1, "team": 0}]}, {"name": "landon prince", "games": [{"game id": 1, "team": 0}]}, {"name": "easton forrest", "games": [{"game id": 1, "team": 0}]}, {"name": "colton krz", "games": [{"game id": 1, "team": 0}]}, {"name": "stratty", "games": [{"game id": 1, "team": 0}]}], "teams": [{"game id": 1, "team": 0}]}, {"username": "chrisbolton", "password": "hockey", "email": "chris8bolton@icloud.com", "id": 2, "games": [1], "hosted games": [], "non users": [], "teams": [{"game id": 1, "team": 0}]}]}
+{
+    "users": [
+        {
+            "username": "nicbolton",
+            "password": "hockey",
+            "email": "nicbolton17@icloud.com",
+            "id": 1,
+            "games": [
+                1
+            ],
+            "non users": [
+                {
+                    "name": "lucas stoy",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "roman falsetta",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "jake gaudario",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "cam skinner",
+                    "games": []
+                },
+                {
+                    "name": "stratty",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "jonas columbus",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "anthony derose",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "easton forrest",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "colton krz",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "landon prince",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "matteo frat",
+                    "games": []
+                },
+                {
+                    "name": "marco sladoje",
+                    "games": []
+                },
+                {
+                    "name": "stef djordevic",
+                    "games": []
+                },
+                {
+                    "name": "allan djordjevic",
+                    "games": []
+                },
+                {
+                    "name": "quinn oneil",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "cohen kiritsis",
+                    "games": []
+                },
+                {
+                    "name": "seth martineau",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "reilly bond",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "kaleb simpson",
+                    "games": []
+                },
+                {
+                    "name": "kyle bleau",
+                    "games": []
+                },
+                {
+                    "name": "braydin metcalf",
+                    "games": []
+                },
+                {
+                    "name": "connor kelly",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "tyler fuhr",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "julian small",
+                    "games": []
+                },
+                {
+                    "name": "jesse mercier",
+                    "games": []
+                },
+                {
+                    "name": "dallas eddy",
+                    "games": []
+                },
+                {
+                    "name": "andrew clark",
+                    "games": []
+                },
+                {
+                    "name": "evan eansor",
+                    "games": []
+                },
+                {
+                    "name": "adam raj",
+                    "games": []
+                },
+                {
+                    "name": "connor mccracken",
+                    "games": []
+                },
+                {
+                    "name": "trevor heslop",
+                    "games": []
+                },
+                {
+                    "name": "nate dowling",
+                    "games": []
+                },
+                {
+                    "name": "brody gillis",
+                    "games": []
+                },
+                {
+                    "name": "sammy guenther",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "joe costea",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "carson mcginnis",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "chris bolton",
+                    "games": [
+                        {
+                            "game id": 1,
+                            "team": 0
+                        }
+                    ]
+                }
+            ],
+            "hosted games": [
+                1
+            ],
+            "teams": [
+                {
+                    "game id": 1,
+                    "team": 0
+                }
+            ]
+        }
+    ]
+}

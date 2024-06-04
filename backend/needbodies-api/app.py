@@ -85,6 +85,26 @@ def users():
                     break
         
         return jsonify(retval)
+    
+@app.route('/nonusers/<gameID>')
+def nonUsers(gameID):
+    retval = []
+    if gameID.isnumeric():
+        gameID = int(gameID)
+    else:
+        return 'success'
+    
+    with open(join(dir, 'users.json'), 'r') as f:
+        user_data = json.load(f)
+        
+    for user in user_data['users']:
+        for non_user in user['non users']:
+            for game in non_user['games']:
+                if game['game id'] == gameID:
+                    retval.append(non_user)
+                    break
+    
+    return jsonify(retval)
 
     
     
@@ -108,6 +128,7 @@ def addUser():
         new_user['email'] = data['email']
         new_user['id'] = generateID(user_data['users'])
         new_user['games'] = []
+        new_user['non users'] = []
         new_user['hosted games'] = []
         new_user['teams'] = []
         
@@ -156,16 +177,14 @@ def joinGame():
                 if game_id in user['games']:
                     return 'user already in game'
                 user_data['users'][i]['games'].append(theGame['id'])
-                user_data['users'][i]['teams'].append({'game id': theGame['id'], 'team': 1})
+                user_data['users'][i]['teams'].append({'game id': theGame['id'], 'team': 0})
                 break
     else:
-        # TODO: add child to game
         for i,user in enumerate(user_data['users']):
             if user['id'] == user_id:
                 for j,non_user in enumerate(user['non users']):
                     if non_user['name'] == child_name:
-                        user_data['users'][i]['non users'][j]['games'].append(theGame['id'])
-                        user_data['users'][i]['teams'].append({'game id': theGame['id'], 'team': 1})
+                        user_data['users'][i]['non users'][j]['games'].append({'game id': theGame['id'], 'team': 0})
                         break
                 break
         
@@ -182,7 +201,7 @@ def deleteGame():
     with open(join(dir, 'users.json'), 'r') as f:
         user_data = json.load(f)
     
-    user_data = removeUserFrom('hosted games', user_data, user_id, game_id)
+    user_data = removeAllGameReferences(user_data, game_id)
     
     with open(join(dir,'users.json'), 'w') as f:
         json.dump(user_data, f)
@@ -213,7 +232,7 @@ def removeUserFromGame():
             if user['id'] == user_id:
                 for j,non_user in enumerate(user['non users']):
                     if non_user['name'] == child_name:
-                        user_data['users'][i]['non users'][j]['games'] = [x for x in non_user['games'] if x != game_id]
+                        user_data['users'][i]['non users'][j]['games'] = [x for x in non_user['games'] if x['game id'] != game_id]
                         break
                 break  
     
@@ -264,8 +283,17 @@ def removeUserFrom(key, user_data, user_id, game_id):
     for i,user in enumerate(user_data['users']):
         if user['id'] == user_id:
             user_data['users'][i][key] = [game for game in user[key] if game != game_id]
-            if key == 'games':
+            if key in ['games', 'hosted games']:
                 user_data['users'][i]['teams'] = [team for team in user['teams'] if team['game id'] != game_id]
+    return user_data
+
+def removeAllGameReferences(user_data, game_id):
+    for i,user in enumerate(user_data['users']):
+        user_data['users'][i]['games'] = [gid for gid in user['games'] if gid != game_id]
+        user_data['users'][i]['hosted games'] = [gid for gid in user['hosted games'] if gid != game_id]
+        for j,non_user in enumerate(user['non users']):
+            user_data['users'][i]['non users'][j]['games'] = [game for game in non_user['games'] if game['game id'] != game_id]
+        user_data['users'][i]['teams'] = [team for team in user['teams'] if team['game id'] != game_id]
     return user_data
             
 

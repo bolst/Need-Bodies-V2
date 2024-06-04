@@ -9,7 +9,11 @@
         <Paragraph>
             @foreach (var player in Players)
             {
-                <Button Background="Background.Transparent">@player.Username</Button>
+                <UserButton User="@player" />
+            }
+            @foreach (var player in NonUserPlayers)
+            {
+                <Button Background="Background.Transparent" Disabled>@player.Name</Button>
             }
         </Paragraph>
     </Row>
@@ -18,13 +22,15 @@
 @code {
     [Parameter] public Data.Game? Game { get; set; } = null;
 
-    [Parameter] public List<Auth.User> Players { get; set; } = new();
+    List<Auth.User> Players = new();
+    List<Data.NonUserPlayer> NonUserPlayers = new();
 
     protected override async Task OnInitializedAsync()
     {
         if (Game != null)
         {
             Players = await Api.Games.GetPlayersInGame(Game);
+            NonUserPlayers = await Api.Games.GetNonUserPlayersInGame(Game);
         }
     }
 }

@@ -136,6 +136,23 @@ namespace NeedBodies.Api
             }
         }
 
+        public static async Task<List<Data.NonUserPlayer>> GetNonUserPlayersInGame(DataType game)
+        {
+            try
+            {
+                var gameID = game.Id;
+                var response = await BaseApi.client.GetAsync(BaseApi.Endpoint + "/nonusers/" + gameID.ToString());
+                response.EnsureSuccessStatusCode();
+                List<Data.NonUserPlayer> retval = await response.Content.ReadFromJsonAsync<List<Data.NonUserPlayer>>() ?? new();
+                return retval;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("GetNonUserPlayersInGame:\n" + exc.ToString());
+                return new();
+            }
+        }
+
         public static async Task<bool> RemovePlayerFromGame(DataType game, int uid, string child_name = "")
         {
             try

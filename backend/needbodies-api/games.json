@@ -1,18 +1,1 @@
-{
-    "games": [
-        {
-            "id": 1,
-            "displayName": "Bolton Pickup",
-            "date": "2024-06-13T19:00:00",
-            "arenaName": "Atlas Tube Recreation Centre",
-            "visibility": "Public"
-        },
-        {
-            "id": 2,
-            "displayName": "Goalie Clinic",
-            "date": "2024-06-02T23:54:03.744899-04:00",
-            "arenaName": "Tecumseh Recreation Complex and Arena",
-            "visibility": "Public"
-        }
-    ]
-}
+{"games": [{"id": 1, "displayName": "Bolton Pickup", "date": "2024-06-06T19:00:00", "arenaName": "Atlas Tube Recreation Centre", "visibility": "Public"}]}
