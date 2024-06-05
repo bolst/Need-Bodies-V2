@@ -18,7 +18,7 @@ def arenas():
         if arena_name != None and len(arena_name) != 0:
             return arenaByName(retval, arena_name)
         
-        return retval
+        return jsonify(retval)
     
     
 @app.route('/addgame', methods=['POST'])
