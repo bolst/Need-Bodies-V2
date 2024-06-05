@@ -4,16 +4,24 @@
 
 <Layout Sider>
     <LayoutSider>
-        <LayoutSiderContent>
-            <SideMenu />
+        <LayoutSiderContent Display="Display.Block.OnDesktop.None.OnMobile">
+            <SideMenu CollapseMode="BarCollapseMode.Small" />
+        </LayoutSiderContent>
+        <LayoutSiderContent Display="Display.None.OnDesktop.Block.OnMobile">
+            <SideMenu CollapseMode="BarCollapseMode.Hide" @bind-BarVisible="@MobileBarVisible" />
         </LayoutSiderContent>
     </LayoutSider>
     <Layout>
-        <LayoutHeader Fixed>
-            @*<TopMenu />*@
-        </LayoutHeader>
         <LayoutContent>
+            <Button Display="Display.None.OnDesktop.Block.OnMobile"
+                Clicked="() => MobileBarVisible = !MobileBarVisible">
+                <Icon Name="IconName.Bars" />
+            </Button>
             @Body
         </LayoutContent>
     </Layout>
 </Layout>
+
+@code {
+    private bool MobileBarVisible { get; set; } = false;
+}

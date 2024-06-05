@@ -9,6 +9,9 @@
 
 @if (Game != null && usersInGame != null && nonUsersInGame != null)
 {
+
+    <Button Outline Color="Color.Primary" Clicked="RandomizeTeams">Randomize</Button>
+
     <Lead Padding="Padding.Is4.FromTop">Unassigned</Lead>
     @foreach (User user in usersInGame)
     {
@@ -130,5 +133,13 @@
             }
         }
 
+    }
+
+    async Task RandomizeTeams()
+    {
+        if (Game != null && usersInGame != null && nonUsersInGame != null)
+        {
+            await LoadData();
+        }
     }
 }

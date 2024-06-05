@@ -3,7 +3,7 @@
 @inject NavigationManager navManager
 
 <Bar NavigationBreakpoint="Breakpoint.Tablet" ThemeContrast="ThemeContrast.Dark" Mode="BarMode.VerticalInline"
-    CollapseMode="BarCollapseMode.Small" Background="Background.Dark" Visible=false>
+    CollapseMode="@CollapseMode" Background="Background.Dark" Visible="@BarVisible">
     <BarBrand>
         <BarItem>
             <BarLink To="">
@@ -17,7 +17,7 @@
             <BarItem>
                 <BarLink To="/">
                     <BarIcon IconName="IconName.Home" />
-                    Dashboard
+                    Home
                 </BarLink>
             </BarItem>
             <AuthorizeView>
@@ -51,7 +51,7 @@
                     <BarItem>
                         <BarLink Clicked="LogOutAsync">
                             <BarIcon IconName="IconName.ArrowLeft" />
-                            Logout
+                            Log Out
                         </BarLink>
                     </BarItem>
                 </Authorized>
@@ -59,7 +59,7 @@
                     <BarItem>
                         <BarLink To="/auth">
                             <BarIcon IconName="IconName.User" />
-                            Login
+                            Log In
                         </BarLink>
                     </BarItem>
                 </NotAuthorized>
@@ -68,11 +68,15 @@
     </BarMenu>
 </Bar>
 @code {
+    [Parameter] public BarCollapseMode CollapseMode { get; set; } = BarCollapseMode.Hide;
+    [Parameter] public bool BarVisible { get; set; } = false;
+    [Parameter] public EventCallback<bool> BarVisibleChanged { get; set; }
+
     private bool pagesBarVisible = true;
 
     RenderFragment customIcon =@<img src="/brand-logo.png" style="width:32px; height: 32px" />;
 
-        async Task LogOutAsync()
+    async Task LogOutAsync()
     {
         var userAuthStateProvider = (UserAuthenticationStateProvider)authStateProvider;
         await userAuthStateProvider.UpdateAuthenticationState(null);
