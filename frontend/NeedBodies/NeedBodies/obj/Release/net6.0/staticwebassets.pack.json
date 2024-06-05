@@ -17,8 +17,16 @@
       "PackagePath": "staticwebassets/css/fonts/IBMPlexSans-Regular.ttf"
     },
     {
-      "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/favicon.ico",
-      "PackagePath": "staticwebassets/favicon.ico"
+      "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/logo-base.png",
+      "PackagePath": "staticwebassets/logo-base.png"
+    },
+    {
+      "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/logo-initials.png",
+      "PackagePath": "staticwebassets/logo-initials.png"
+    },
+    {
+      "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/logo-symbol.png",
+      "PackagePath": "staticwebassets/logo-symbol.png"
     },
     {
       "Id": "/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/wwwroot/mackinnon.png",
