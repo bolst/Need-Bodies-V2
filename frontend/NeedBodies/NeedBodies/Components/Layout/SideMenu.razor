@@ -36,22 +36,10 @@
                         </BarLink>
                     </BarItem>
 
-                </Authorized>
-            </AuthorizeView>
-        </BarStart>
-        <BarEnd>
-            <AuthorizeView>
-                <Authorized>
                     <BarItem>
                         <BarLink To="/profile">
                             <BarIcon IconName="IconName.UserCircle" />
                             Profile
-                        </BarLink>
-                    </BarItem>
-                    <BarItem>
-                        <BarLink Clicked="LogOutAsync">
-                            <BarIcon IconName="IconName.ArrowLeft" />
-                            Log Out
                         </BarLink>
                     </BarItem>
                 </Authorized>
@@ -63,6 +51,18 @@
                         </BarLink>
                     </BarItem>
                 </NotAuthorized>
+            </AuthorizeView>
+        </BarStart>
+        <BarEnd>
+            <AuthorizeView>
+                <Authorized>
+                    <BarItem>
+                        <BarLink Clicked="LogOutAsync">
+                            <BarIcon IconName="IconName.ArrowLeft" />
+                            Log Out
+                        </BarLink>
+                    </BarItem>
+                </Authorized>
             </AuthorizeView>
         </BarEnd>
     </BarMenu>
