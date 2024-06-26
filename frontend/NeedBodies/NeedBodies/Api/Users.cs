@@ -46,17 +46,17 @@ namespace NeedBodies.Api
             }
         }
 
-        public static async Task<string> GetHeadshot(int userID)
+        public static async Task<string> GetHeadshot(int uid)
         {
             return "";
             try
             {
-                var response = await BaseApi.client.GetAsync(BaseApi.Endpoint + "/headshot?id=" + userID.ToString());
+                var response = await BaseApi.client.GetAsync(BaseApi.Endpoint + "/headshot?id=" + uid.ToString());
                 response.EnsureSuccessStatusCode();
                 var retval = await response.Content.ReadAsStringAsync();
 
                 byte[] bytes = Convert.FromBase64String(retval);
-                using (var image = new FileStream("wwwroot/" + userID.ToString() + ".png", FileMode.Create))
+                using (var image = new FileStream("wwwroot/" + uid.ToString() + ".png", FileMode.Create))
                 {
                     image.Write(bytes, 0, bytes.Length);
                     image.Flush();
@@ -71,6 +71,27 @@ namespace NeedBodies.Api
             }
         }
 
+        public static async Task<bool> DeleteNonUser(int uid, string nonUserName)
+        {
+            try
+            {
+                var data = new Dictionary<string, object>
+                {
+                    {"user id", uid},
+                    {"child name", nonUserName}
+                };
+                var response = await BaseApi.client.PostAsJsonAsync(BaseApi.Endpoint + "/deletenonuser", data);
+                response.EnsureSuccessStatusCode();
+                string retval = await response.Content.ReadAsStringAsync();
+                return retval == "success";
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("DeleteNonUser:\n" + exc.ToString());
+                return false;
+            }
+
+        }
 
     }
 }

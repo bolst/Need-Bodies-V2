@@ -100,7 +100,6 @@
     {
         if(InDeleteMode)
         {
-
         }
         else
         {
@@ -116,7 +115,6 @@
     {        
         if(InDeleteMode)
         {
-
         }
         else
         {
@@ -133,7 +131,7 @@
     {
         if(InDeleteMode)
         {
-
+            await DeleteNonPlayer(userID, name);
         }
         else
         {
@@ -149,7 +147,7 @@
     {
         if(InDeleteMode)
         {
-
+            await DeleteNonPlayer(userID, name);
         }
         else
         {
@@ -182,5 +180,10 @@
             }
         }
 
+    }
+
+    async Task DeleteNonPlayer(int uid, string childName)
+    {
+        await Api.Users.DeleteNonUser(uid, childName);
     }
 }

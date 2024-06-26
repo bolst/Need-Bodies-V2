@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify
 import os
 from os.path import join
 import json
+import numpy as np
+import cv2
+import base64
 from validate import Validator
 
 app = Flask(__name__)
@@ -131,6 +134,7 @@ def addUser():
         new_user['non users'] = []
         new_user['hosted games'] = []
         new_user['teams'] = []
+        new_user['position'] = 'forward'
         
         user_data['users'].append(new_user)
 
@@ -277,7 +281,73 @@ def cycleUserTeam():
         json.dump(user_data, f)
         
     return 'success'
+
+@app.route('/setposition', methods=['POST'])
+def setPosition():
+    user_id = request.json['user id']
+    position = request.json['position']
     
+    with open(join(dir, 'users.json'), 'r') as f:
+        user_data = json.load(f)
+        
+    if position in ['forward', 'defense', 'goalie']:
+        for i,user in enumerate(user_data['users']):
+            if user['id'] == user_id:
+                user_data['users'][i]['position'] = position
+                break
+            
+    with open(join(dir, 'users.json'), 'w') as f:
+        json.dump(user_data, f)
+    
+    return 'success'
+
+@app.route('/setheadshot', methods=['POST'])
+def setHeadshot():
+    user_id = request.args.get('uid')
+    
+    try:
+        data = request.data
+    except Exception as exc:
+        print(exc)
+        return ''
+    
+    arr = np.fromstring(data, np.uint8)
+    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    cv2.imwrite(join(dir, 'headshots', f'{user_id}.png'), img)
+    
+    return 'success'
+    
+@app.route('/headshot')
+def headshot():
+    user_id = request.args.get('id')
+    
+    if not os.path.isfile(join(dir,'headshots',f'{user_id}.png')):
+        print('no image')
+        return 'image does not exist'
+    
+    with open(join(dir,'headshots', f'{user_id}.png'), 'rb') as image:
+        f = image.read()
+        return base64.b64encode(f).decode('utf-8')
+    
+@app.route('/deletenonuser', methods=['POST'])
+def deleteNonUser():
+    user_id = request.json['user id']
+    child_name = request.json['child name']
+    
+    with open(join(dir, 'users.json'), 'r') as f:
+        user_data = json.load(f)
+        
+    for i,user in enumerate(user_data['users']):
+        if user['id'] == user_id:
+            user_data['users'][i]['non users'] = [nu for nu in user['non users'] if nu['name'] != child_name]
+            break
+            
+    with open(join(dir, 'users.json'), 'w') as f:
+        json.dump(user_data, f)
+    
+    return 'success'
+    
+                    
 
 def removeUserFrom(key, user_data, user_id, game_id):
     for i,user in enumerate(user_data['users']):

@@ -1,1 +1,18 @@
-{"games": [{"id": 1, "displayName": "Bolton Pickup", "date": "2024-06-06T19:00:00", "arenaName": "Atlas Tube Recreation Centre", "visibility": "Public"}]}
+{
+    "games": [
+        {
+            "id": 1,
+            "displayName": "Bolton Pickup",
+            "date": "2024-06-06T19:00:00",
+            "arenaName": "Atlas Tube Recreation Centre",
+            "visibility": "Public"
+        },
+        {
+            "id": 2,
+            "displayName": "Bolton Pickup 2",
+            "date": "2024-06-27T19:30:00",
+            "arenaName": "Atlas Tube Recreation Centre",
+            "visibility": "Public"
+        }
+    ]
+}
