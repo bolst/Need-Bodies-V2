@@ -80,7 +80,7 @@ namespace NeedBodies.Api
             }
         }
 
-        public static async Task<List<Data.Game>> GetUserGames(int host_id)
+        public static async Task<List<DataType>> GetUserGames(int host_id)
         {
             try
             {

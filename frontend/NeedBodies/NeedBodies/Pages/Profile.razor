@@ -9,9 +9,9 @@
     <Authorized>
         @if (user != null)
         {
-            <Div Padding="Padding.Is4">
+            <Div Padding="Padding.Is4.OnTablet.Is4.OnY.OnMobile">
                 <Div Padding="Padding.Is4.OnTablet.Is4.OnY.OnMobile">
-                    <ProfileSection Header="Account Info" iconName="IconName.IdCard">
+                    <ProfileSection Header="Account Info" iconName="IconName.Fingerprint">
                         <Table Borderless>
                             <TableBody>
                                 <TableRow Position="Position.Relative">
@@ -22,8 +22,8 @@
                                     </TableRowCell>
                                 </TableRow>
                                 <TableRow Position="Position.Relative">
-                                    <TableRowCell>Email</TableRowCell>
-                                    <TableRowCell>@user.Email</TableRowCell>
+                                    <TableRowCell TextOverflow="TextOverflow.Wrap">Email</TableRowCell>
+                                    <TableRowCell TextOverflow="TextOverflow.Wrap">@user.Email</TableRowCell>
                                     <TableRowCell TextAlignment="TextAlignment.End">
                                         <Icon Name="IconName.Edit" />
                                     </TableRowCell>
@@ -34,6 +34,32 @@
                                     <TableRowCell TextAlignment="TextAlignment.End">
                                         <Icon Name="IconName.Edit" />
                                     </TableRowCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </ProfileSection>
+                </Div>
+                <Div Padding="Padding.Is4.OnTablet.Is4.OnY.OnMobile">
+                    <ProfileSection Header="Player Info" iconName="IconName.IdCard">
+                        <Table Borderless>
+                            <Button Clicked='() => navManager.NavigateTo("/landing")' Color="Color.Info" Outline>
+                                <Icon Name="IconName.Edit" />
+                            </Button>
+                            <TableBody>
+                                <TableRow Position="Position.Relative">
+                                    <TableRowCell>Headshot</TableRowCell>
+                                    <TableRowCell>
+                                        @if(headshotSource != null)
+                                        {
+                                            <Figure Size="FigureSize.Is48x48">
+                                                <FigureImage Source="@headshotSource" />
+                                            </Figure>
+                                        }
+                                    </TableRowCell>
+                                </TableRow>
+                                <TableRow Position="Position.Relative">
+                                    <TableRowCell>Position</TableRowCell>
+                                    <TableRowCell>@user.Position</TableRowCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -64,6 +90,8 @@
     List<Data.Game> hostGames = new();
     List<Data.Game> userGames = new();
 
+    string headshotSource = "";
+
     int passwordLength = 0;
 
     protected override async Task OnInitializedAsync()
@@ -82,6 +110,7 @@
         hostGames = await Api.Games.GetHostGames(currentUserID);
         userGames = await Api.Games.GetUserGames(currentUserID);
 
+        headshotSource = await Api.Users.GetHeadshot(currentUserID);
     }
 
 

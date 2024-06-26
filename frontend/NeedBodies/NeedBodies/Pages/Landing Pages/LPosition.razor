@@ -1,0 +1,39 @@
+@page "/landing/0"
+@using NeedBodies.Auth
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+@inject ProtectedSessionStorage protectedSessionStorage
+@inject UserService userService
+
+
+<AuthorizeView>
+    <Authorized>
+        <Div Padding="Padding.Is4">
+            <LandingStep step="LandingStep.Step.Position">
+                <LandingContent Title="What position do you play?" To="/landing/1">
+                    <Row RowColumns="RowColumns.Are1">
+                        <Column ColumnSize="ColumnSize.Is6.OnTablet.Is10.OnMobile" Margin="Margin.IsAuto">
+                            <Select TValue="string" SelectedValueChanged="@OnSelectedValueChanged">
+                                <SelectItem Value='@("forward")'>Forward</SelectItem>
+                                <SelectItem Value='@("defense")'>Defense</SelectItem>
+                                <SelectItem Value='@("goalie")'>Goalie</SelectItem>
+                            </Select>
+                        </Column>
+                    </Row>
+                </LandingContent>
+            </LandingStep>
+        </Div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    async Task OnSelectedValueChanged(string position)
+    {
+        var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
+        if (userSession.Success)
+        {
+            int userID = userSession!.Value!.ID;
+            await Api.Users.SetUserPosition(userID, position);
+        }
+    }
+}

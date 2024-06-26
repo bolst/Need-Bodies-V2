@@ -28,6 +28,9 @@ namespace NeedBodies.Auth
         [JsonPropertyName("teams")]
         public List<UserTeam> Teams { get; set; }
 
+        [JsonPropertyName("position")]
+        public string Position { get; set; }
+
 
 
         public async Task<bool> CheckPassword(string attempt)

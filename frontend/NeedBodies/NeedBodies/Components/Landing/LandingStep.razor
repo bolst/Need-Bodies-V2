@@ -1,0 +1,63 @@
+@namespace NeedBodies.Components
+@inject NavigationManager navManager
+
+<Steps SelectedStep="@ToString(step)" SelectedStepChanged="@OnSelectedStepChanged">
+    <Items>
+        @StepTab(Step.Position)
+        @StepTab(Step.Headshot)
+    </Items>
+    <Content>
+        @StepBody(Step.Position, step)
+        @StepBody(Step.Headshot, step)
+    </Content>
+</Steps>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter] public Step step { get; set; } = Step.Position;
+
+    private RenderFragment StepTab(Step step) => __builder =>
+    {
+        <Step Name="@ToString(step)">
+            @ToString(step)
+        </Step>
+    };
+
+    private RenderFragment StepBody(Step step, Step currStep) => __builder =>
+    {
+        <StepPanel Name="@ToString(step)">
+            @if (currStep == step)
+            {
+                @ChildContent
+            }
+            else
+            {
+
+            }
+        </StepPanel>
+    };
+
+    public enum Step
+    {
+        Position,
+        Headshot
+    }
+
+    public string ToString(Step step)
+    {
+        switch (step)
+        {
+            case Step.Headshot:
+                return "Headshot";
+            case Step.Position:
+            default:
+                return "Position";
+        }
+    }
+
+    private Task OnSelectedStepChanged(string name)
+    {
+        return Task.CompletedTask;
+    }
+}

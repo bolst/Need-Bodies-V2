@@ -25,7 +25,7 @@
                     </FieldLabel>
                     <FieldBody>
                         <TextEdit Border="Border.Is4.Dark.OnBottom.Is0.OnAll" Background="Background.Light"
-                            @bind-Text="@inputUsername" />
+                            @bind-Text="@inputUsername" @onkeydown="@OnKeyDown" />
                     </FieldBody>
                 </Field>
                 <Field>
@@ -34,7 +34,7 @@
                     </FieldLabel>
                     <FieldBody>
                         <TextEdit Border="Border.Is4.Dark.OnBottom.Is0.OnAll" Background="Background.Light"
-                            Role="TextRole.Password" @bind-Text="@inputPassword" />
+                            Role="TextRole.Password" @bind-Text="@inputPassword" @onkeydown="@OnKeyDown" />
                     </FieldBody>
                 </Field>
                 <Field>
@@ -89,8 +89,9 @@
     async Task LogInAsync()
     {
         User? user = userService.GetByUsername(inputUsername);
+        bool isAuthenticated = await Api.Auth.Validate(inputUsername, inputPassword);
 
-        if (user == null)
+        if (user == null || !isAuthenticated)
         {
             alertVisible = true;
             return;
@@ -103,5 +104,13 @@
                 ID = user.ID,
             });
         navManager.NavigateTo("/", true);
+    }
+
+    public async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter")
+        {
+            await LogInAsync();
+        }
     }
 }

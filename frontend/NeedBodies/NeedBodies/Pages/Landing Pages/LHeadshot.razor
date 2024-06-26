@@ -1,0 +1,67 @@
+@page "/landing/1"
+@using NeedBodies.Auth
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+@inject ProtectedSessionStorage protectedSessionStorage
+@inject UserService userService
+
+<AuthorizeView>
+    <Authorized>
+        <Div Padding="Padding.Is4">
+            <LandingStep step="LandingStep.Step.Headshot">
+                <LandingContent Title="Upload a headshot" To="/profile">
+                    <Row RowColumns="RowColumns.Are1">
+                        <Column ColumnSize="ColumnSize.Is6.OnTablet.Is10.OnMobile" Margin="Margin.IsAuto">
+                            @if (bytes != null)
+                            {
+                                string src = "data:image;base64, " + System.Convert.ToBase64String(bytes);
+                                    <Image Source="@src" Fluid />
+                            }
+                            <FileEdit AutoReset="false" Changed="@OnChanged" Filter="image/*" />
+                            <Lead TextSize="TextSize.Small" Padding="Padding.Is4.FromTop">If you are on mobile, capturing an
+                                image on upload causes some issues. Take the
+                                picture first and upload it from your camera roll instead.</Lead>
+                        </Column>
+                    </Row>
+                </LandingContent>
+            </LandingStep>
+        </Div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+
+    byte[]? bytes = null;
+    string? filename = null;
+
+    async Task OnChanged(FileChangedEventArgs e)
+    {
+        try
+        {
+            var file = e.Files.FirstOrDefault();
+            if (file == null) return;
+
+            MemoryStream ms = new MemoryStream();
+            await file.OpenReadStream(long.MaxValue).CopyToAsync(ms);
+
+            bytes = ms.ToArray();
+            filename = file.Name;
+
+            var userSession = await protectedSessionStorage.GetAsync<UserSession>("UserSession");
+            if (userSession.Success)
+            {
+                int userID = userSession!.Value!.ID;
+                bool status = await Api.Users.SetHeadshot(userID, bytes);
+                Console.WriteLine(status);
+            }
+
+        }
+        catch (Exception exc)
+        {
+
+        }
+
+        StateHasChanged();
+    }
+}

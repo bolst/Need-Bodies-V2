@@ -26,6 +26,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9HYW1lUGFnZS9HYW1lUGxheWVycy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Components/Landing/LandingContent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYW5kaW5nL0xhbmRpbmdDb250ZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Components/Landing/LandingStep.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYW5kaW5nL0xhbmRpbmdTdGVwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Components/Layout/FooterMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvRm9vdGVyTWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -80,6 +88,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Pages/Landing Pages/LHeadshot.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTGFuZGluZyBQYWdlcy9MSGVhZHNob3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Pages/Landing Pages/LPosition.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTGFuZGluZyBQYWdlcy9MUG9zaXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Pages/Landing.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTGFuZGluZy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/nic/git/Need-Bodies-V2/frontend/NeedBodies/NeedBodies/Pages/Login.razor]

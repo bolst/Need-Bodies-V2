@@ -3,7 +3,14 @@
 
 @if (Game != null)
 {
-    <span>@Game.DisplayName</span>
+    <Div Padding="Padding.Is4">
+    <Row Background="Background.Light">
+        <Lead>@Game.DisplayName</Lead>
+        <Lead>@Game.Date.ToString("MMMM dd yyyy")</Lead>
+        <Lead>@Game.ArenaName</Lead>
+        <Lead>@Game.Visibility</Lead>
+    </Row>
+</Div>
 }
 
 @code {

@@ -13,6 +13,7 @@
     <Column ColumnSize="ColumnSize.Is8.OnTablet.Is12.OnMobile">
         <Button Color="Color.Primary" Clicked="() => modalRef.Show()" Outline>Add non-user</Button>
         <Button Color="Color.Primary" Clicked='() => navManager.NavigateTo("/managegame/pickteams?id=" + Game.Id)' Outline>Pick teams</Button>
+        <Button Color="Color.Danger" Clicked="() => InDeleteMode = !InDeleteMode" Outline="@(!InDeleteMode)">Delete mode</Button>
     </Column>
 </Row>
     <Row>
@@ -83,6 +84,8 @@
 
     int currentUserID = -1;
 
+    bool InDeleteMode = false;
+
     [Parameter] public Data.Game? Game { get; set; } = null;
     List<User>? usersInGame = null;
     List<User>? usersBenched = null;
@@ -95,7 +98,14 @@
     };
     async Task RemoveInGamePlayer(Data.Game game, int userID)
     {
+        if(InDeleteMode)
+        {
+
+        }
+        else
+        {
         await Api.Games.RemovePlayerFromGame(game, userID);
+        }
         await LoadData();
     }
     RenderFragment PlayerBenchedFragment(User user) => __builder =>
@@ -103,8 +113,15 @@
         <Button Clicked="async () => await AddBenchedPlayer(Game, user.ID)">@user.Username</Button>
     };
     async Task AddBenchedPlayer(Data.Game game, int userID)
-    {
+    {        
+        if(InDeleteMode)
+        {
+
+        }
+        else
+        {
         await Api.Games.AddUserToGameAsync(userID, game);
+        }
         await LoadData();
     }
 
@@ -114,7 +131,14 @@
     };
     async Task RemoveInGameNonUser(Data.Game game, int userID, string name)
     {
+        if(InDeleteMode)
+        {
+
+        }
+        else
+        {
         await Api.Games.RemovePlayerFromGame(game, userID, name);
+        }
         await LoadData();
     }
     RenderFragment NonUserBenchedFragment(Data.NonUserPlayer user) => __builder =>
@@ -123,7 +147,14 @@
     };
         async Task AddBenchedNonUser(Data.Game game, int userID, string name)
     {
+        if(InDeleteMode)
+        {
+
+        }
+        else
+        {
         await Api.Games.AddUserToGameAsync(userID, game, name);
+        }
         await LoadData();
     }
 

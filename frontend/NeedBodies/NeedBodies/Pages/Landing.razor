@@ -1,0 +1,10 @@
+@page "/landing"
+@inject NavigationManager navManager
+
+<AuthorizeView>
+    <Authorized>
+        @{
+            navManager.NavigateTo("/landing/0");
+        }
+    </Authorized>
+</AuthorizeView>
